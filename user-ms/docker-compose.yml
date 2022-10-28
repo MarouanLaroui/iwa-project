@@ -1,0 +1,17 @@
+services:
+  iwa-user-db:
+    # nom du container = hostname sur le réseau
+    image: "postgres:14.2-alpine"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+    volumes:
+      - iwa-user-db-volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432 # host:container
+
+volumes:
+  iwa-user-db-volume:
+    driver: local
+
