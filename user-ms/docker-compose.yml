@@ -4,9 +4,9 @@ services:
     container_name: iwa-user-db
     image: "postgres:14.2-alpine"
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     volumes:
       - iwa-user-db-volume:/var/lib/postgresql/data
     ports:
@@ -18,8 +18,10 @@ services:
     container_name: iwa-user-app
     build: .
     environment:
-      spring.datasource.url: jdbc:postgresql://iwa-user-db:5432/postgres
-      #DATABASE_HOST: postgres-db # faut que ce soit le hostname de la database
+      spring.datasource.url: "jdbc:postgresql://iwa-user-db:5432/${POSTGRES_DB}"
+      spring.datasource.username: $POSTGRES_USER
+      spring.datasource.password: $POSTGRES_PASSWORD
+      spring.datasource.name: $POSTGRES_DB
     ports:
       - 8080:8080
     networks:
