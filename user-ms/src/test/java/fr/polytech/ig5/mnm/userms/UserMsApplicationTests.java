@@ -10,7 +10,7 @@ class UserMsApplicationTests {
 
 
     @Test
-    void bite() {
+    void isTrue() {
         assertEquals(true, true);
     }
 
