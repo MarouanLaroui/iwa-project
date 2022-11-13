@@ -1,5 +1,4 @@
 FROM gradle:7-jdk17 AS build
-#17.02
 #Copy source files and compile them
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
