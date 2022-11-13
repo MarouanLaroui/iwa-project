@@ -2,6 +2,7 @@ package fr.polytech.ig5.mnm.userms.services;
 
 import fr.polytech.ig5.mnm.userms.models.User;
 import fr.polytech.ig5.mnm.userms.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final UserRepository repository;
+    @Autowired
+    private UserRepository repository;
 
     public UserService(UserRepository repository) {
         this.repository = repository;
