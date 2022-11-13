@@ -5,9 +5,9 @@ COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN gradle build --no-daemon --stacktrace
 
-FROM gradle:7.5.1-jdk-focal
+FROM gradle:7-jdk17
 EXPOSE 8080
 #Copy the jar and run it
 RUN mkdir /app
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
-ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/spring-boot-application.jar"]
+COPY --from=build /home/gradle/src/build/libs/user-ms-0.0.1-SNAPSHOT.jar /app/spring-boot-application.jar
+ENTRYPOINT ["java","-jar","/app/spring-boot-application.jar"]
