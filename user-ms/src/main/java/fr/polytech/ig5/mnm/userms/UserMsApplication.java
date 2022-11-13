@@ -1,5 +1,6 @@
 package fr.polytech.ig5.mnm.userms;
 
+import fr.polytech.ig5.mnm.userms.services.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
