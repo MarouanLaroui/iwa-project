@@ -5,14 +5,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@SpringBootTest(classes = UserMsApplicationTests.class)
 class UserMsApplicationTests {
-
-
     @Test
     void isTrue() {
         assertEquals(true, true);
     }
-
-
 }
