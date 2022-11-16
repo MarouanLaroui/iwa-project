@@ -37,16 +37,8 @@ public class WorkerController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deletePost(@PathVariable Long id) {
-
-        var isRemoved = this.service.delete(id);
-
-        if (!isRemoved) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        // doesn't work, empty return in postman
-        return new ResponseEntity<>(HttpStatus.OK);
+    public Boolean deletePost(@PathVariable Long id) {
+        return this.service.delete(id);
     }
 
 
