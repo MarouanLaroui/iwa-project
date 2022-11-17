@@ -49,6 +49,4 @@ public class WorkerController {
         // doesn't work, empty return in postman
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }
