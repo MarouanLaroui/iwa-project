@@ -1,17 +1,14 @@
 package fr.polytech.ig5.mnm.offerms.offerms.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Data;
 import java.sql.Date;
+import java.util.Set;
 
 @Data
 @Entity
-@Table(name="workers")
+@Table(name="offers")
 public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +37,9 @@ public class Offer {
 
     @Column(name="need_driving_license")
     private Boolean needDrivingLicence;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Application> applications;
 
     @Column(name="led_to_job")
     private Boolean ledToJob;

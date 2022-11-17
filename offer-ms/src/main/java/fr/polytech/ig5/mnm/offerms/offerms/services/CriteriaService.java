@@ -1,5 +1,7 @@
 package fr.polytech.ig5.mnm.offerms.offerms.services;
+import fr.polytech.ig5.mnm.offerms.offerms.models.Criteria;
 import fr.polytech.ig5.mnm.offerms.offerms.models.Offer;
+import fr.polytech.ig5.mnm.offerms.offerms.repositories.CriteriaRepository;
 import fr.polytech.ig5.mnm.offerms.offerms.repositories.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,25 +10,25 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class OfferService{
+public class CriteriaService{
     @Autowired
-    private OfferRepository repository;
+    private CriteriaRepository repository;
 
-    public OfferService(OfferRepository repository) {
+    public CriteriaService(CriteriaRepository repository) {
         this.repository = repository;
     }
 
-    public List<Offer> findAll() {
+    public List<Criteria> findAll() {
         // TODO: find better alternative to type cast
-        return (List<Offer>) this.repository.findAll();
+        return (List<Criteria>) this.repository.findAll();
     }
 
-    public Optional<Offer> find(final Long id) {
+    public Optional<Criteria> find(final Long id) {
         return repository.findById(id);
     }
 
-    public Offer create(Offer offer) {
-        return this.repository.save(offer);
+    public Criteria create(Criteria criteria) {
+        return this.repository.save(criteria);
     }
 
     public Boolean delete(final Long id) {
