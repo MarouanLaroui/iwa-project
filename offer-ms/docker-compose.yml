@@ -1,0 +1,35 @@
+services:
+  iwa-offer-db:
+    # nom du container = hostname sur le réseau
+    container_name: iwa-offer-db
+    image: "postgres:14.2-alpine"
+    environment:
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    volumes:
+      - iwa-offer-db-volume:/var/lib/postgresql/data
+    ports:
+      - 5433:5432 # host:container
+    networks:
+      - iwa-offer-network
+
+  iwa-offer-app:
+    container_name: iwa-offer-app
+    build: .
+    environment:
+      spring.datasource.url: "jdbc:postgresql://iwa-offer-db:5432/${POSTGRES_DB}"
+      spring.datasource.username: $POSTGRES_USER
+      spring.datasource.password: $POSTGRES_PASSWORD
+      spring.datasource.name: $POSTGRES_DB
+    ports:
+      - 8081:8081
+    networks:
+      - iwa-offer-network
+
+volumes:
+  iwa-offer-db-volume:
+    driver: local
+
+networks:
+  iwa-offer-network:
