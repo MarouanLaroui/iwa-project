@@ -23,7 +23,7 @@ services:
       spring.datasource.password: $POSTGRES_PASSWORD
       spring.datasource.name: $POSTGRES_DB
     ports:
-      - 8082:8082
+      - 8082:8080
     networks:
       - iwa-recruitment-network
 
