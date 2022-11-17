@@ -1,40 +1,39 @@
-package fr.polytech.ig5.mnm.offerms.offerms.controllers;
+package fr.polytech.ig5.mnm.offerms.controllers;
 
-import fr.polytech.ig5.mnm.offerms.offerms.models.Offer;
-import fr.polytech.ig5.mnm.offerms.offerms.services.OfferService;
+import fr.polytech.ig5.mnm.offerms.models.Criteria;
+import fr.polytech.ig5.mnm.offerms.services.CriteriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/offers") // 1
-public class OfferController {
+@RequestMapping("/criterias") // 1
+public class CriteriaController {
 
     @Autowired
-    OfferService service;
+    CriteriaService service;
 
-    public OfferController(OfferService service) {
+    public CriteriaController(CriteriaService service) {
         this.service = service;
     }
 
     @GetMapping("/")
-    public List<Offer> index() {
+    public List<Criteria> index() {
         return this.service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<Offer> get(@PathVariable("id") Long id) {
+    public Optional<Criteria> get(@PathVariable("id") Long id) {
         return this.service.find(id);
     }
 
     @PostMapping("/create")
-    public Offer create(@RequestBody Offer offer) {
-        return this.service.create(offer);
+    public Criteria create(@RequestBody Criteria application) {
+        return this.service.create(application);
     }
 
     @DeleteMapping(value = "/{id}")

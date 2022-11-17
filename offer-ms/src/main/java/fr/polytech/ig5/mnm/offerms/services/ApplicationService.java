@@ -1,8 +1,6 @@
-package fr.polytech.ig5.mnm.offerms.offerms.services;
-import fr.polytech.ig5.mnm.offerms.offerms.models.Application;
-import fr.polytech.ig5.mnm.offerms.offerms.models.Offer;
-import fr.polytech.ig5.mnm.offerms.offerms.repositories.ApplicationRepository;
-import fr.polytech.ig5.mnm.offerms.offerms.repositories.OfferRepository;
+package fr.polytech.ig5.mnm.offerms.services;
+import fr.polytech.ig5.mnm.offerms.models.Application;
+import fr.polytech.ig5.mnm.offerms.repositories.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package fr.polytech.ig5.mnm.offerms.offerms.repositories;
+package fr.polytech.ig5.mnm.offerms.repositories;
 
-import fr.polytech.ig5.mnm.offerms.offerms.models.Application;
+import fr.polytech.ig5.mnm.offerms.models.Application;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

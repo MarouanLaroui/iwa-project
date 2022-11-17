@@ -1,10 +1,9 @@
-package fr.polytech.ig5.mnm.offerms.offerms.models;
+package fr.polytech.ig5.mnm.offerms.models;
 
 import javax.persistence.*;
 
 import lombok.Data;
 import java.sql.Date;
-import java.util.Set;
 
 @Data
 @Entity

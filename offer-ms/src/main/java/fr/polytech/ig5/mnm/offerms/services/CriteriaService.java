@@ -1,8 +1,6 @@
-package fr.polytech.ig5.mnm.offerms.offerms.services;
-import fr.polytech.ig5.mnm.offerms.offerms.models.Criteria;
-import fr.polytech.ig5.mnm.offerms.offerms.models.Offer;
-import fr.polytech.ig5.mnm.offerms.offerms.repositories.CriteriaRepository;
-import fr.polytech.ig5.mnm.offerms.offerms.repositories.OfferRepository;
+package fr.polytech.ig5.mnm.offerms.services;
+import fr.polytech.ig5.mnm.offerms.models.Criteria;
+import fr.polytech.ig5.mnm.offerms.repositories.CriteriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

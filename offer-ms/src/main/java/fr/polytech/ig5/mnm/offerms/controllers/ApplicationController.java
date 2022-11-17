@@ -1,7 +1,7 @@
-package fr.polytech.ig5.mnm.offerms.offerms.controllers;
+package fr.polytech.ig5.mnm.offerms.controllers;
 
-import fr.polytech.ig5.mnm.offerms.offerms.models.Application;
-import fr.polytech.ig5.mnm.offerms.offerms.services.ApplicationService;
+import fr.polytech.ig5.mnm.offerms.models.Application;
+import fr.polytech.ig5.mnm.offerms.services.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
