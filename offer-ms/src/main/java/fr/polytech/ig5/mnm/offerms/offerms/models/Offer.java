@@ -38,8 +38,10 @@ public class Offer {
     @Column(name="need_driving_license")
     private Boolean needDrivingLicence;
 
+    /*
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Application> applications;
+     */
 
     @Column(name="led_to_job")
     private Boolean ledToJob;

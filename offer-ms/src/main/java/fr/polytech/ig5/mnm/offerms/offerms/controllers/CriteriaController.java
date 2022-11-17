@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/application") // 1
+@RequestMapping("/criterias") // 1
 public class CriteriaController {
 
     @Autowired

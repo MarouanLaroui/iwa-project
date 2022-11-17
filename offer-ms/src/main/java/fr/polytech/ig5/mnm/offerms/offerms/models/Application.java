@@ -21,7 +21,9 @@ public class Application {
     @Column(name="is_validated_by_worker")
     private String isValidatedByWorker;
 
+    /*
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "book_id", nullable = false)
     private Offer offer;
+     */
 }
