@@ -1,18 +1,24 @@
 package fr.polytech.ig5.mnm.offerms.controllers;
 
+import fr.polytech.ig5.mnm.offerms.DTO.CriteriaCreateDTO;
 import fr.polytech.ig5.mnm.offerms.models.Criteria;
 import fr.polytech.ig5.mnm.offerms.services.CriteriaService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/criterias") // 1
 public class CriteriaController {
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     CriteriaService service;
@@ -31,9 +37,9 @@ public class CriteriaController {
         return this.service.find(id);
     }
 
-    @PostMapping("/create")
-    public Criteria create(@RequestBody Criteria application) {
-        return this.service.create(application);
+    @PostMapping("/")
+    public Criteria create(@Valid @RequestBody CriteriaCreateDTO criteriaDTO) {
+        return this.service.create(modelMapper.map(criteriaDTO, Criteria.class));
     }
 
     @DeleteMapping(value = "/{id}")

@@ -1,9 +1,7 @@
 package fr.polytech.ig5.mnm.offerms.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Data;
 import java.sql.Date;
 
@@ -11,7 +9,12 @@ import java.sql.Date;
 @Entity
 @Table(name="criterias")
 public class Criteria {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long criteriaId;
+
+    @Column(name="worker_id", nullable = false)
     private Long workerId;
 
     @Column(name="contract_type")

@@ -1,18 +1,24 @@
 package fr.polytech.ig5.mnm.offerms.controllers;
 
+import fr.polytech.ig5.mnm.offerms.DTO.OfferCreateDTO;
 import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.services.OfferService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/offers") // 1
 public class OfferController {
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     OfferService service;
@@ -31,9 +37,9 @@ public class OfferController {
         return this.service.find(id);
     }
 
-    @PostMapping("/create")
-    public Offer create(@RequestBody Offer offer) {
-        return this.service.create(offer);
+    @PostMapping("/")
+    public Offer create(@Valid @RequestBody OfferCreateDTO offerDTO) {
+        return this.service.create(modelMapper.map(offerDTO, Offer.class));
     }
 
     @DeleteMapping(value = "/{id}")
