@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = UserMsApplicationTests.class)
 class UserMsApplicationTests {
-
     @Test
     void isTrue() {
         assertEquals(true, true);
