@@ -22,18 +22,22 @@ services:
     container_name: iwa-user-app
     build: .
     environment:
-      spring.datasource.url: "jdbc:postgresql://iwa-user-db:5432/${DB_NAME_USERMS}"
+      spring.datasource.url: "jdbc:postgresql://iwa-user-db:5432/${DB_NAME_USERMS}" # 5432 because on same network
       spring.datasource.username: $DB_USER_USERMS
       spring.datasource.password: $DB_PASSWORD_USERMS
       spring.datasource.name: $DB_NAME_USERMS
-      keycloak.auth-server-url: "http://localhost:${$APP_PORT_KEYCLOAK}/auth"
+      # keycloak
       keycloak.realm: iwa
-      keycloak.public-client: true
       keycloak.resource: iwa-user-ms
+      keycloak.auth-server-url: "http://localhost:${APP_PORT_KEYCLOAK}/"
+      keycloak.public-client: false
+      #keycloak.security-constraints[0].authRoles[0]: worker
+      #keycloak.security-constraints[0].securityCollections[0].patterns[0]: /workers/*
     ports:
       - $APP_PORT_USERMS:8080
     networks:
       - iwa-user-network
+      - iwa-keycloak-network
 
   # = = = = keycloak containers = = = = #
   iwa-keycloak:
