@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/works") // 1
@@ -52,7 +52,7 @@ public class WorkController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> create(@RequestBody WorkDTO workDTO) {
+    public ResponseEntity<Object> create(@Valid @RequestBody WorkDTO workDTO) {
         Work work = modelMapper.map(workDTO, Work.class);
         Work workCreated = service.create(work);
 
