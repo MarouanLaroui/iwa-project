@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Data
-public class WorkDTO {
+public class WorkCreateDTO {
 
     private Long id;
 
@@ -20,9 +20,11 @@ public class WorkDTO {
     @NotEmpty(message = "a work must have a job label")
     private String jobLabel;
 
+    @NotNull(message = "a work must have a starting date (YYYY-MM-DD)")
     private Date startingDate;
 
-    private Date end_date;
+    @NotNull(message = "a work must have a end date (YYYY-MM-DD)")
+    private Date endDate;
 
     private Boolean isRatedByEmployee;
 

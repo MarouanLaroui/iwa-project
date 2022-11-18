@@ -1,6 +1,7 @@
 package fr.polytech.ig5.mnm.recruitmentms.controllers;
 
-import fr.polytech.ig5.mnm.recruitmentms.DTO.WorkDTO;
+import fr.polytech.ig5.mnm.recruitmentms.DTO.WorkCreateDTO;
+import fr.polytech.ig5.mnm.recruitmentms.DTO.WorkUpdateDTO;
 import fr.polytech.ig5.mnm.recruitmentms.models.Work;
 import fr.polytech.ig5.mnm.recruitmentms.services.WorkService;
 import org.modelmapper.ModelMapper;
@@ -52,13 +53,28 @@ public class WorkController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> create(@Valid @RequestBody WorkDTO workDTO) {
+    public ResponseEntity<Object> create(@Valid @RequestBody WorkCreateDTO workDTO) {
         Work work = modelMapper.map(workDTO, Work.class);
         Work workCreated = service.create(work);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(workCreated);
+    }
+
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody WorkUpdateDTO workDTO) {
+        // on s'assure qu'il à bien le bon id
+        workDTO.setId(id);
+
+        Work updatedWork =
+                service.update(modelMapper.map(workDTO, Work.class));
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedWork);
+
     }
 
     @DeleteMapping(value = "/{id}")
