@@ -28,8 +28,12 @@ public class WorkService {
         return repository.findById(id);
     }
 
-    public Work create(Work user) {
-        return this.repository.save(user);
+    public Work create(Work work) {
+        return this.repository.save(work);
+    }
+
+    public Work update(Work work) {
+        return this.repository.save(work);
     }
 
     public Boolean delete(final Long id) {
