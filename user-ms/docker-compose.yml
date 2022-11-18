@@ -26,7 +26,6 @@ services:
       spring.datasource.password: $POSTGRES_PASSWORD
       spring.datasource.name: $POSTGRES_DB
       spring.kafka.bootstrap-servers: kafka1:9092
-      #spring.kafka.bootstrap-servers: ${KAFKA_BROKER_1}
     ports:
       - 8080:8080
     networks:

@@ -34,7 +34,6 @@ public class WorkerController {
 
     @PostMapping("/create")
     public Worker create(@RequestBody Worker worker) {
-        System.out.println("test");
         return this.service.create(worker);
     }
 
