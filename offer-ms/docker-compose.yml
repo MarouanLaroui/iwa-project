@@ -22,10 +22,14 @@ services:
       spring.datasource.username: $POSTGRES_USER
       spring.datasource.password: $POSTGRES_PASSWORD
       spring.datasource.name: $POSTGRES_DB
+      spring.kafka.bootstrap-servers: kafka1:9092
+    depends_on:
+      - iwa-offer-db
     ports:
-      - 8081:8081
+      - 8081:8080
     networks:
       - iwa-offer-network
+      - kafka_iwa-kafka-network
 
 volumes:
   iwa-offer-db-volume:
@@ -33,3 +37,5 @@ volumes:
 
 networks:
   iwa-offer-network:
+  kafka_iwa-kafka-network:
+    external: true
