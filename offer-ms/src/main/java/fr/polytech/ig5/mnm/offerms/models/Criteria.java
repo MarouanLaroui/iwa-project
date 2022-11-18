@@ -15,7 +15,7 @@ public class Criteria {
     private Long workerId;
 
     @Column(name="contract_type")
-    private ContractType contractType;
+    private String contractType;
 
     @Column(name="sector")
     private String sector;
