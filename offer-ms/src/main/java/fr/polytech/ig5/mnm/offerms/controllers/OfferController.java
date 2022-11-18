@@ -28,18 +28,35 @@ public class OfferController {
     }
 
     @GetMapping("/")
-    public List<Offer> index() {
-        return this.service.findAll();
+    public ResponseEntity<Object> index() {
+        List<Offer> offers = this.service.findAll();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(offers);
     }
 
     @GetMapping("/{id}")
-    public Optional<Offer> get(@PathVariable("id") Long id) {
-        return this.service.find(id);
+    public ResponseEntity<Object> get(@PathVariable("id") Long id) {
+        Optional<Offer> offer = this.service.find(id);
+
+        if(offer.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Offer not found");
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(offer);
     }
 
     @PostMapping("/")
-    public Offer create(@Valid @RequestBody OfferCreateDTO offerDTO) {
-        return this.service.create(modelMapper.map(offerDTO, Offer.class));
+    public ResponseEntity<Object> create(@Valid @RequestBody OfferCreateDTO offerDTO) {
+        Offer offer = this.service.create(modelMapper.map(offerDTO, Offer.class));
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(offer);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -48,11 +65,14 @@ public class OfferController {
         var isRemoved = this.service.delete(id);
 
         if (!isRemoved) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Offer not found");
         }
 
-        // doesn't work, empty return in postman
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(id);
     }
 
 

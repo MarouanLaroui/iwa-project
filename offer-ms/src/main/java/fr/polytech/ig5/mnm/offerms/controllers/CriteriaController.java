@@ -28,18 +28,35 @@ public class CriteriaController {
     }
 
     @GetMapping("/")
-    public List<Criteria> index() {
-        return this.service.findAll();
+    public ResponseEntity<Object> index() {
+        List<Criteria> criterias = this.service.findAll();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(criterias);
     }
 
     @GetMapping("/{id}")
-    public Optional<Criteria> get(@PathVariable("id") Long id) {
-        return this.service.find(id);
+    public ResponseEntity<Object> get(@PathVariable("id") Long id) {
+        Optional<Criteria> criteria = this.service.find(id);
+
+        if(criteria.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Criteria not found");
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(criteria);
     }
 
     @PostMapping("/")
-    public Criteria create(@Valid @RequestBody CriteriaCreateDTO criteriaDTO) {
-        return this.service.create(modelMapper.map(criteriaDTO, Criteria.class));
+    public ResponseEntity<Object> create(@Valid @RequestBody CriteriaCreateDTO criteriaDTO) {
+        Criteria criteria = this.service.create(modelMapper.map(criteriaDTO, Criteria.class));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(criteria);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -48,11 +65,14 @@ public class CriteriaController {
         var isRemoved = this.service.delete(id);
 
         if (!isRemoved) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Criteria not found");
         }
 
-        // doesn't work, empty return in postman
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(id);
     }
 
 

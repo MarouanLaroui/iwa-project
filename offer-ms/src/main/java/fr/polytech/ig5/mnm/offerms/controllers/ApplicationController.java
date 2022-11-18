@@ -33,27 +33,45 @@ public class ApplicationController {
     }
 
     @GetMapping("/applications/")
-    public List<Application> index() {
-        return this.applicationService.findAll();
+    public ResponseEntity<Object> index() {
+        List <Application> applications = this.applicationService.findAll();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(applications);
     }
 
     @GetMapping("/applications/{id}")
-    public Optional<Application> get(@PathVariable("id") Long id) {
-        return this.applicationService.find(id);
+    public ResponseEntity<Object> get(@PathVariable("id") Long id) {
+        Optional<Application> application = this.applicationService.find(id);
+
+        if(application.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Application not found");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(application);
     }
 
     @PostMapping("offers/{offerId}/applications")
-    public Application create(@PathVariable("offerId") Long offerId, @Valid @RequestBody ApplicationCreateDTO applicationDTO) {
+    public ResponseEntity<Object> create(@PathVariable("offerId") Long offerId, @Valid @RequestBody ApplicationCreateDTO applicationDTO) {
         Optional<Offer> offer = offerService.find(offerId);
 
         if(offer.isEmpty()){
-            // do something when ResponseEntity will be setup
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Offer not found");
         }
 
         Application application = modelMapper.map(applicationDTO, Application.class);
         application.setOffer(offer.get());
 
-        return this.applicationService.create(application);
+        Application applicationCreated = this.applicationService.create(application);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(applicationCreated);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -62,11 +80,14 @@ public class ApplicationController {
         var isRemoved = this.applicationService.delete(id);
 
         if (!isRemoved) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Application not found");
         }
 
-        // doesn't work, empty return in postman
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(id);
     }
 
 
