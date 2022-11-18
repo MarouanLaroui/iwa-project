@@ -38,7 +38,7 @@ public class WorkerService {
     public Boolean delete(final Long id) {
         try {
             repository.deleteById(id);
-            this.producer.sendMessage("coucou","USER_DELETED");
+            this.producer.sendMessage("USER_DELETED","coucou");
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
