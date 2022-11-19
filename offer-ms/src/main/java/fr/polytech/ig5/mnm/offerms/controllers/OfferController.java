@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/offers") // 1
@@ -37,7 +38,7 @@ public class OfferController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> get(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> get(@PathVariable("id") UUID id) {
         Optional<Offer> offer = this.service.find(id);
 
         if(offer.isEmpty()){
@@ -61,7 +62,7 @@ public class OfferController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") Long id, @Valid @RequestBody OfferUpdateDTO offerDTO) {
+    public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody OfferUpdateDTO offerDTO) {
         // on s'assure qu'il à bien le bon id
         offerDTO.setOfferId(id);
 
@@ -74,7 +75,7 @@ public class OfferController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deleteOffer(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteOffer(@PathVariable UUID id) {
 
         var isRemoved = this.service.delete(id);
 

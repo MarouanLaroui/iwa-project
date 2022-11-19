@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CriteriaService{
@@ -21,7 +22,7 @@ public class CriteriaService{
         return (List<Criteria>) this.repository.findAll();
     }
 
-    public Optional<Criteria> find(final Long id) {
+    public Optional<Criteria> find(final UUID id) {
         return repository.findById(id);
     }
 
@@ -33,7 +34,7 @@ public class CriteriaService{
         return this.repository.save(criteria);
     }
 
-    public Boolean delete(final Long id) {
+    public Boolean delete(final UUID id) {
         try {
             repository.deleteById(id);
             return true;

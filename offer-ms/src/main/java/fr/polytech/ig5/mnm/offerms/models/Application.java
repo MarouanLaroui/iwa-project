@@ -9,14 +9,16 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.UUID;
+
 @Data
 @Entity
 @Table(name="applications")
 public class Application {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long applicationId;
+    @GeneratedValue()
+    private UUID applicationId;
 
     @Column(name="message")
     private String message;
@@ -28,7 +30,7 @@ public class Application {
     private Boolean isValidatedByWorker;
 
     @Column(name="worker_id")
-    private Long workerId;
+    private UUID workerId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "offer_id", nullable = false)

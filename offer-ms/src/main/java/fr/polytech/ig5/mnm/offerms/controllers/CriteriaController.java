@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/criterias") // 1
@@ -38,7 +39,7 @@ public class CriteriaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> get(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> get(@PathVariable("id") UUID id) {
         Optional<Criteria> criteria = this.service.find(id);
 
         if(criteria.isEmpty()){
@@ -61,12 +62,22 @@ public class CriteriaController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") Long id, @Valid @RequestBody CriteriaUpdateDTO criteriaDTO) {
+    public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody CriteriaUpdateDTO criteriaDTO) {
         // on s'assure qu'il à bien le bon id
         criteriaDTO.setCriteriaId(id);
 
+        Optional<Criteria> criteria = this.service.find(id);
+        if(criteria.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Criteria not found");
+        }
+
+        Criteria newCriteria = modelMapper.map(criteriaDTO, Criteria.class);
+        newCriteria.setWorkerId(criteria.get().getWorkerId());
+
         Criteria updatedCriteria =
-                service.update(modelMapper.map(criteriaDTO, Criteria.class));
+                service.update(newCriteria);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -74,7 +85,7 @@ public class CriteriaController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deleteOffer(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteOffer(@PathVariable UUID id) {
 
         var isRemoved = this.service.delete(id);
 

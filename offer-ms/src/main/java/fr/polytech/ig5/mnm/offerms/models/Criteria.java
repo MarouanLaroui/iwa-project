@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import lombok.Data;
 import java.sql.Date;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -11,11 +12,11 @@ import java.sql.Date;
 public class Criteria {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long criteriaId;
+    @GeneratedValue()
+    private UUID criteriaId;
 
     @Column(name="worker_id", nullable = false)
-    private Long workerId;
+    private UUID workerId;
 
     @Column(name="contract_type")
     private String contractType;

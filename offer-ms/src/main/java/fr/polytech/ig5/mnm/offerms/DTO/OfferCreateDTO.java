@@ -2,10 +2,13 @@ package fr.polytech.ig5.mnm.offerms.DTO;
 
 import fr.polytech.ig5.mnm.offerms.models.ContractType;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.time.Instant;
+import java.util.UUID;
 
 @Data
 public class OfferCreateDTO {
@@ -13,11 +16,10 @@ public class OfferCreateDTO {
     @NotEmpty(message = "an offer must have a description")
     private String description;
 
-    // we need to create this field automatically during the creation
-    /*
-    @NotNull(message = "an offer must have a creation date (YYYY-MM-DD)")
-    private Date creationDate;
-     */
+    private UUID companyId;
+
+    @CreatedDate
+    private Instant creationDate;
 
     @NotNull(message = "an offer must have a starting date (YYYY-MM-DD)")
     private Date startingDate;
@@ -28,13 +30,11 @@ public class OfferCreateDTO {
     @NotNull(message = "an offer must have a contract type")
     private ContractType contractType;
 
-    //@NotNull(message = "an offer must have a salary")
-    private int salary;
-
     @NotNull(message = "an offer must have a location")
     private String location;
 
-    //@NotNull(message = "an offer must have a number of hours")
+    private int salary;
+
     private int nbOfHours;
 
     private Boolean needDrivingLicence;

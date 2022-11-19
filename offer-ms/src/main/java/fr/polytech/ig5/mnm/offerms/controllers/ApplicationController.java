@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("") // 1
@@ -42,7 +43,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/applications/{id}")
-    public ResponseEntity<Object> get(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> get(@PathVariable("id") UUID id) {
         Optional<Application> application = this.applicationService.find(id);
 
         if(application.isEmpty()){
@@ -56,7 +57,7 @@ public class ApplicationController {
     }
 
     @PostMapping("offers/{offerId}/applications")
-    public ResponseEntity<Object> create(@PathVariable("offerId") Long offerId, @Valid @RequestBody ApplicationCreateDTO applicationDTO) {
+    public ResponseEntity<Object> create(@PathVariable("offerId") UUID offerId, @Valid @RequestBody ApplicationCreateDTO applicationDTO) {
         Optional<Offer> offer = offerService.find(offerId);
 
         if(offer.isEmpty()){
@@ -76,7 +77,7 @@ public class ApplicationController {
     }
 
     @PutMapping(value = "applications/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") Long id, @Valid @RequestBody ApplicationUpdateDTO applicationDTO) {
+    public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody ApplicationUpdateDTO applicationDTO) {
         // on s'assure qu'il à bien le bon id
         applicationDTO.setApplicationId(id);
 
@@ -105,7 +106,7 @@ public class ApplicationController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deleteOffer(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteOffer(@PathVariable UUID id) {
 
         var isRemoved = this.applicationService.delete(id);
 

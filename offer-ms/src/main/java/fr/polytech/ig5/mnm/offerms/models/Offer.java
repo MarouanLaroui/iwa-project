@@ -8,7 +8,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import java.sql.Date;
+import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -16,14 +18,17 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Offer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long offerId;
+    @GeneratedValue()
+    private UUID offerId;
+
+    @Column(name = "company_id")
+    private UUID companyId;
 
     @Column(nullable = false)
     private String description;
 
     @Column(name = "creation_date")
-    private Date creationDate;
+    private Instant creationDate;
 
     @Column(name = "starting_date")
     private Date startingDate;
