@@ -1,6 +1,7 @@
 package fr.polytech.ig5.mnm.offerms.controllers;
 
 import fr.polytech.ig5.mnm.offerms.DTO.OfferCreateDTO;
+import fr.polytech.ig5.mnm.offerms.DTO.OfferUpdateDTO;
 import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.services.OfferService;
 import org.modelmapper.ModelMapper;
@@ -57,6 +58,19 @@ public class OfferController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(offer);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Object> update(@PathVariable("id") Long id, @Valid @RequestBody OfferUpdateDTO offerDTO) {
+        // on s'assure qu'il à bien le bon id
+        offerDTO.setOfferId(id);
+
+        Offer updatedOffer =
+                service.update(modelMapper.map(offerDTO, Offer.class));
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedOffer);
     }
 
     @DeleteMapping(value = "/{id}")

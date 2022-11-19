@@ -29,6 +29,10 @@ public class CriteriaService{
         return this.repository.save(criteria);
     }
 
+    public Criteria update(Criteria criteria) {
+        return this.repository.save(criteria);
+    }
+
     public Boolean delete(final Long id) {
         try {
             repository.deleteById(id);

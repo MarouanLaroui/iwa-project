@@ -29,6 +29,11 @@ public class ApplicationService{
         return this.repository.save(application);
     }
 
+    public Application update(Application application) {
+        return this.repository.save(application);
+    }
+
+
     public Boolean delete(final Long id) {
         try {
             repository.deleteById(id);

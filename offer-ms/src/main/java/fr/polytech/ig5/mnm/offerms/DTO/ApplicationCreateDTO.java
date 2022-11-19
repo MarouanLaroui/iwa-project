@@ -13,9 +13,9 @@ public class ApplicationCreateDTO {
 
     private String message;
 
-    private Boolean isValidatedByCompany;
+    private Boolean isValidatedByCompany = false;
 
-    private Boolean isValidatedByWorker;
+    private Boolean isValidatedByWorker = false;
 
     // envoyer dans le token plus tard? donc pas besoin de verif dans le DTO
     private Long workerId;

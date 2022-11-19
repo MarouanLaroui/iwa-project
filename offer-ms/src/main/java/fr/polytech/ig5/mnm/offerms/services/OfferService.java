@@ -29,6 +29,10 @@ public class OfferService{
         return this.repository.save(offer);
     }
 
+    public Offer update(Offer offer) {
+        return this.repository.save(offer);
+    }
+
     public Boolean delete(final Long id) {
         try {
             repository.deleteById(id);

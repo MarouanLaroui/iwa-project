@@ -1,6 +1,7 @@
 package fr.polytech.ig5.mnm.offerms.controllers;
 
 import fr.polytech.ig5.mnm.offerms.DTO.ApplicationCreateDTO;
+import fr.polytech.ig5.mnm.offerms.DTO.ApplicationUpdateDTO;
 import fr.polytech.ig5.mnm.offerms.models.Application;
 import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.services.ApplicationService;
@@ -72,6 +73,35 @@ public class ApplicationController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(applicationCreated);
+    }
+
+    @PutMapping(value = "applications/{id}")
+    public ResponseEntity<Object> update(@PathVariable("id") Long id, @Valid @RequestBody ApplicationUpdateDTO applicationDTO) {
+        // on s'assure qu'il à bien le bon id
+        applicationDTO.setApplicationId(id);
+
+        Optional<Application> application = this.applicationService.find(id);
+        if(application.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Offer not found");
+        }
+        Application app = application.get();
+
+        app.setMessage(applicationDTO.getMessage());
+        app.setIsValidatedByCompany(applicationDTO.getIsValidatedByCompany());
+        app.setIsValidatedByWorker(applicationDTO.getIsValidatedByWorker());
+
+        // copy immutable field
+        //application.setWorkerId(app.get().getWorkerId());
+        //application.setOffer(app.get().getOffer());
+
+        Application updatedApplication =
+                applicationService.update(app);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedApplication);
     }
 
     @DeleteMapping(value = "/{id}")

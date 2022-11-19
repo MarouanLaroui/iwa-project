@@ -1,6 +1,7 @@
 package fr.polytech.ig5.mnm.offerms.controllers;
 
 import fr.polytech.ig5.mnm.offerms.DTO.CriteriaCreateDTO;
+import fr.polytech.ig5.mnm.offerms.DTO.CriteriaUpdateDTO;
 import fr.polytech.ig5.mnm.offerms.models.Criteria;
 import fr.polytech.ig5.mnm.offerms.services.CriteriaService;
 import org.modelmapper.ModelMapper;
@@ -57,6 +58,19 @@ public class CriteriaController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(criteria);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Object> update(@PathVariable("id") Long id, @Valid @RequestBody CriteriaUpdateDTO criteriaDTO) {
+        // on s'assure qu'il à bien le bon id
+        criteriaDTO.setCriteriaId(id);
+
+        Criteria updatedCriteria =
+                service.update(modelMapper.map(criteriaDTO, Criteria.class));
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedCriteria);
     }
 
     @DeleteMapping(value = "/{id}")
