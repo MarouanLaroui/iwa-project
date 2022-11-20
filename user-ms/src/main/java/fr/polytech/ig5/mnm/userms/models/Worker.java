@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -29,7 +30,7 @@ public class Worker {
     private String email;
 
     @Column(name="birth_date")
-    private Date birthDate;
+    private LocalDate birthDate;
 
     @Column(name="cv_link")
     private String cvLink;

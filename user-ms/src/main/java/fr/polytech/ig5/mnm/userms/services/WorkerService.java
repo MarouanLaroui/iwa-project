@@ -36,6 +36,10 @@ public class WorkerService {
         return this.repository.save(user);
     }
 
+    public Worker update(Worker user) {
+        return this.repository.save(user);
+    }
+
     public Boolean delete(final UUID id) {
         try {
             repository.deleteById(id);

@@ -32,6 +32,10 @@ public class CompanyService {
         return this.repository.save(user);
     }
 
+    public Company update(Company user) {
+        return this.repository.save(user);
+    }
+
     public Boolean delete(final UUID id) {
         try {
             repository.deleteById(id);

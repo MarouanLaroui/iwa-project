@@ -1,7 +1,10 @@
 package fr.polytech.ig5.mnm.userms.controllers;
 
 import fr.polytech.ig5.mnm.userms.DTO.CompanyCreateDTO;
+import fr.polytech.ig5.mnm.userms.DTO.CompanyUpdateDTO;
+import fr.polytech.ig5.mnm.userms.DTO.WorkerUpdateDTO;
 import fr.polytech.ig5.mnm.userms.models.Company;
+import fr.polytech.ig5.mnm.userms.models.Worker;
 import fr.polytech.ig5.mnm.userms.services.CompanyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +61,22 @@ public class CompanyController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(companyCreated);    }
+                .body(companyCreated);
+    }
+
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> update(@PathVariable("id") UUID id,@Valid @RequestBody CompanyUpdateDTO companyDTO) {
+        Company company = modelMapper.map(companyDTO, Company.class);
+        company.setId(id);
+
+        Company updatedCompany =
+                service.update(company);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedCompany);
+    }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> deletePost(@PathVariable UUID id) {
