@@ -1,7 +1,7 @@
 package fr.polytech.ig5.mnm.userms.controllers;
 
-import fr.polytech.ig5.mnm.userms.models.Worker;
-import fr.polytech.ig5.mnm.userms.services.WorkerService;
+import fr.polytech.ig5.mnm.userms.models.Company;
+import fr.polytech.ig5.mnm.userms.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,28 +11,28 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/workers")
-public class WorkerController {
+@RequestMapping("/companies")
+public class CompanyController {
 
     @Autowired
-    WorkerService service;
+    CompanyService service;
 
-    public WorkerController(WorkerService service) {
+    public CompanyController(CompanyService service) {
         this.service = service;
     }
 
     @GetMapping("/")
-    public List<Worker> index() {
+    public List<Company> index() {
         return this.service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<Worker> get(@PathVariable("id") Long id) {
+    public Optional<Company> get(@PathVariable("id") Long id) {
         return this.service.find(id);
     }
 
     @PostMapping("/")
-    public Worker create(@RequestBody Worker worker) {
+    public Company create(@RequestBody Company worker) {
         return this.service.create(worker);
     }
 
@@ -40,6 +40,5 @@ public class WorkerController {
     public Boolean deletePost(@PathVariable Long id) {
         return this.service.delete(id);
     }
-
 
 }
