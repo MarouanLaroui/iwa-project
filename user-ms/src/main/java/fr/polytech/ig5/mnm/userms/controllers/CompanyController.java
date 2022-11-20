@@ -22,23 +22,50 @@ public class CompanyController {
     }
 
     @GetMapping("/")
-    public List<Company> index() {
-        return this.service.findAll();
+    public ResponseEntity<Object> index() {
+        List<Company> companies = this.service.findAll();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(companies);
     }
 
     @GetMapping("/{id}")
-    public Optional<Company> get(@PathVariable("id") Long id) {
-        return this.service.find(id);
+    public ResponseEntity<Object> get(@PathVariable("id") Long id) {
+        Optional<Company> company = service.find(id);
+
+        if(company.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Company not found");
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(company);
     }
 
     @PostMapping("/")
-    public Company create(@RequestBody Company worker) {
-        return this.service.create(worker);
-    }
+    public ResponseEntity<Object> create(@RequestBody Company company) {
+        //Company work = modelMapper.map(workDTO, Work.class);
+        Company companyCreated = service.create(company);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(companyCreated);    }
 
     @DeleteMapping(value = "/{id}")
-    public Boolean deletePost(@PathVariable Long id) {
-        return this.service.delete(id);
+    public ResponseEntity<Object> deletePost(@PathVariable Long id) {
+        Boolean isRemoved = this.service.delete(id);
+
+        if(!isRemoved){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Company not found");
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(id);
     }
 
 }

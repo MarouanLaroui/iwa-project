@@ -27,7 +27,7 @@ services:
       spring.datasource.name: $POSTGRES_DB
       spring.kafka.bootstrap-servers: kafka1:9092
     ports:
-      - 8082:8080
+      - 8083:8080
     networks:
       - iwa-user-network
       - kafka_iwa-kafka-network

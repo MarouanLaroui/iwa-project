@@ -36,20 +36,4 @@ public class Worker {
     @Column(name="has_driving_license")
     private Boolean hasDrivingLicense;
 
-    public Worker(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
-
-    public Worker(String firstName, String lastName, String email, Date birthDate, String cvLink, Boolean hasDrivingLicense) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.cvLink = cvLink;
-        this.hasDrivingLicense = hasDrivingLicense;
-    }
-
-    public Worker() {}
 }

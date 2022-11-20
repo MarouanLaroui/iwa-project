@@ -22,24 +22,49 @@ public class WorkerController {
     }
 
     @GetMapping("/")
-    public List<Worker> index() {
-        return this.service.findAll();
+    public ResponseEntity<Object> index() {
+        List<Worker> workers = this.service.findAll();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(workers);
     }
 
     @GetMapping("/{id}")
-    public Optional<Worker> get(@PathVariable("id") Long id) {
-        return this.service.find(id);
-    }
+    public ResponseEntity<Object> get(@PathVariable("id") Long id) {
+        Optional<Worker> worker = service.find(id);
+
+        if(worker.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Worker not found");
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(worker);    }
 
     @PostMapping("/")
-    public Worker create(@RequestBody Worker worker) {
-        return this.service.create(worker);
-    }
+    public ResponseEntity<Object> create(@RequestBody Worker worker) {
+        // Worker worker = modelMapper.map(workDTO, Work.class);
+        Worker workerCreated = service.create(worker);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(workerCreated);    }
 
     @DeleteMapping(value = "/{id}")
-    public Boolean deletePost(@PathVariable Long id) {
-        return this.service.delete(id);
-    }
+    public ResponseEntity<Object> deletePost(@PathVariable Long id) {
+        Boolean isRemoved = this.service.delete(id);
+
+        if(!isRemoved){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Worker not found");
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(id);    }
 
 
 }
