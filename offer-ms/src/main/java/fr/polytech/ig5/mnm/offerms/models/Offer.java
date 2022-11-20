@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,13 +29,13 @@ public class Offer {
     private String description;
 
     @Column(name = "creation_date")
-    private Instant creationDate;
+    private LocalDate creationDate;
 
     @Column(name = "starting_date")
-    private Date startingDate;
+    private LocalDate startingDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column(nullable = false, name = "contract_type")
     private ContractType contractType;

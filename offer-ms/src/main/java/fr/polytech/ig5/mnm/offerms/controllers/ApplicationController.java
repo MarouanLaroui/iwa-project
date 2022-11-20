@@ -89,7 +89,6 @@ public class ApplicationController {
         }
         Application app = application.get();
 
-        app.setMessage(applicationDTO.getMessage());
         app.setIsValidatedByCompany(applicationDTO.getIsValidatedByCompany());
         app.setIsValidatedByWorker(applicationDTO.getIsValidatedByWorker());
 

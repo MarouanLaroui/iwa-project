@@ -10,8 +10,6 @@ public class ApplicationUpdateDTO {
 
     private UUID applicationId;
 
-    private String message;
-
     @NotNull(message = "missing isValidatedByCompany")
     private Boolean isValidatedByCompany;
 

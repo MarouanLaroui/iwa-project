@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -18,10 +19,10 @@ public class OfferUpdateDTO {
     private String description;
 
     @NotNull(message = "an offer must have a starting date (YYYY-MM-DD)")
-    private Date startingDate;
+    private LocalDate startingDate;
 
     @NotNull(message = "an offer must have a end date (YYYY-MM-DD)")
-    private Date endDate;
+    private LocalDate endDate;
 
     @NotNull(message = "an offer must have a contract type")
     private ContractType contractType;

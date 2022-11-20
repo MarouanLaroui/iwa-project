@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import lombok.Data;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -31,10 +32,10 @@ public class Criteria {
     private int salaryExpectation;
 
     @Column(name="starting_date")
-    private Date startingDate;
+    private LocalDate startingDate;
 
     @Column(name="end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column
     private String location;

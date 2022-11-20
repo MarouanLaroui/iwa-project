@@ -23,10 +23,10 @@ public class Application {
     @Column(name="message")
     private String message;
 
-    @Column(name="is_validated_by_company", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Column(name="is_validated_by_company")
     private Boolean isValidatedByCompany;
 
-    @Column(name="is_validated_by_worker", columnDefinition = "boolean default false")
+    @Column(name="is_validated_by_worker")
     private Boolean isValidatedByWorker;
 
     @Column(name="worker_id")

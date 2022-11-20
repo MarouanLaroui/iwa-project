@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -18,14 +19,13 @@ public class OfferCreateDTO {
 
     private UUID companyId;
 
-    @CreatedDate
-    private Instant creationDate;
+    private LocalDate creationDate = LocalDate.now();
 
     @NotNull(message = "an offer must have a starting date (YYYY-MM-DD)")
-    private Date startingDate;
+    private LocalDate startingDate;
 
     @NotNull(message = "an offer must have a end date (YYYY-MM-DD)")
-    private Date endDate;
+    private LocalDate endDate;
 
     @NotNull(message = "an offer must have a contract type")
     private ContractType contractType;
@@ -39,6 +39,6 @@ public class OfferCreateDTO {
 
     private Boolean needDrivingLicence;
 
-    private Boolean ledToJob;
+    private Boolean ledToJob = false;
 
 }
