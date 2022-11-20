@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class WorkerService {
@@ -27,7 +28,7 @@ public class WorkerService {
         return (List<Worker>) this.repository.findAll();
     }
 
-    public Optional<Worker> find(final Long id) {
+    public Optional<Worker> find(final UUID id) {
         return repository.findById(id);
     }
 
@@ -35,7 +36,11 @@ public class WorkerService {
         return this.repository.save(user);
     }
 
-    public Boolean delete(final Long id) {
+    public Worker update(Worker user) {
+        return this.repository.save(user);
+    }
+
+    public Boolean delete(final UUID id) {
         try {
             repository.deleteById(id);
             this.producer.sendMessage("USER_DELETED","coucou");

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CompanyService {
@@ -23,7 +24,7 @@ public class CompanyService {
         return (List<Company>) this.repository.findAll();
     }
 
-    public Optional<Company> find(final Long id) {
+    public Optional<Company> find(final UUID id) {
         return repository.findById(id);
     }
 
@@ -31,7 +32,11 @@ public class CompanyService {
         return this.repository.save(user);
     }
 
-    public Boolean delete(final Long id) {
+    public Company update(Company user) {
+        return this.repository.save(user);
+    }
+
+    public Boolean delete(final UUID id) {
         try {
             repository.deleteById(id);
             return true;
