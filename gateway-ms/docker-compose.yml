@@ -1,0 +1,6 @@
+services:
+  iwa-gateway-app:
+    container_name: iwa-gateway-app
+    build: .
+    ports:
+      - 8080:8080
