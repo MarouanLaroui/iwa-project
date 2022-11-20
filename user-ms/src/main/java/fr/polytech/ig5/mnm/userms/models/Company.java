@@ -19,8 +19,8 @@ public class Company {
     @Column(nullable = false)
     private String email;
 
-    @Column(name="nb_employees")
-    private String nbEmployees;
+    @Column(name="employees_number")
+    private String employeesNumber;
 
     @Column()
     private String description;

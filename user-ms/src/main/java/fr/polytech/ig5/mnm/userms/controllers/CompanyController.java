@@ -31,7 +31,7 @@ public class CompanyController {
         return this.service.find(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public Company create(@RequestBody Company worker) {
         return this.service.create(worker);
     }

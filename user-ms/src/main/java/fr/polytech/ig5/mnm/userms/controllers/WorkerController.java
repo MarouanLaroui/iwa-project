@@ -31,7 +31,7 @@ public class WorkerController {
         return this.service.find(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public Worker create(@RequestBody Worker worker) {
         return this.service.create(worker);
     }
