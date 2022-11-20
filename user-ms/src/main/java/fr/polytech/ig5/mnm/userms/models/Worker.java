@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 import java.sql.Date;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -15,8 +16,8 @@ import java.sql.Date;
 public class Worker {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue()
+    private UUID id;
 
     @Column(name="first_name")
     private String firstName;

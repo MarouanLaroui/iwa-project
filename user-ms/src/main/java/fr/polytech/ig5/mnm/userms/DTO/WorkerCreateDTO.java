@@ -16,7 +16,7 @@ public class WorkerCreateDTO {
     private String lastName;
 
     @NotEmpty(message = "a worker must have an email")
-    @Email(message = "must be a correct email")
+    @Email
     private String email;
 
     private Date birthDate;

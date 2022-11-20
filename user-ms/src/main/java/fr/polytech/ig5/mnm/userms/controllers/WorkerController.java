@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/workers")
@@ -37,7 +38,7 @@ public class WorkerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> get(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> get(@PathVariable("id") UUID id) {
         Optional<Worker> worker = service.find(id);
 
         if(worker.isEmpty()){
@@ -60,7 +61,7 @@ public class WorkerController {
                 .body(workerCreated);    }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deletePost(@PathVariable Long id) {
+    public ResponseEntity<Object> deletePost(@PathVariable UUID id) {
         Boolean isRemoved = this.service.delete(id);
 
         if(!isRemoved){
