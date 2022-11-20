@@ -25,15 +25,19 @@ public class GatewayMsApplication {
 		String recruitmentMsURI  = env.getProperty("RECRUITMENT_MS_URI");
 
 		return builder.routes()
-				.route("r1", r -> r.path("/users/**")
+				.route("r1", r -> r.path("/workers/**")
 						.and()
 						.uri(userMsURI))
 
-				.route("r2", r -> r.path("/offers/**")
+				.route("r2", r -> r.path("/companies/**")
+						.and()
+						.uri(userMsURI))
+
+				.route("r3", r -> r.path("/offers/**")
 						.and()
 						.uri(offerMsURI))
 
-				.route("r3", r -> r.path("/recruitments/**")
+				.route("r4", r -> r.path("/works/**")
 						.and()
 						.uri(recruitmentMsURI))
 				.build();
