@@ -1,12 +1,15 @@
 package fr.polytech.ig5.mnm.userms.controllers;
 
+import fr.polytech.ig5.mnm.userms.DTO.WorkerCreateDTO;
 import fr.polytech.ig5.mnm.userms.models.Worker;
 import fr.polytech.ig5.mnm.userms.services.WorkerService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,9 +18,13 @@ import java.util.Optional;
 public class WorkerController {
 
     @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
     WorkerService service;
 
     public WorkerController(WorkerService service) {
+        super();
         this.service = service;
     }
 
@@ -44,8 +51,8 @@ public class WorkerController {
                 .body(worker);    }
 
     @PostMapping("/")
-    public ResponseEntity<Object> create(@RequestBody Worker worker) {
-        // Worker worker = modelMapper.map(workDTO, Work.class);
+    public ResponseEntity<Object> create(@Valid @RequestBody WorkerCreateDTO workerDTO) {
+        Worker worker = modelMapper.map(workerDTO, Worker.class);
         Worker workerCreated = service.create(worker);
 
         return ResponseEntity

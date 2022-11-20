@@ -1,18 +1,24 @@
 package fr.polytech.ig5.mnm.userms.controllers;
 
+import fr.polytech.ig5.mnm.userms.DTO.CompanyCreateDTO;
 import fr.polytech.ig5.mnm.userms.models.Company;
 import fr.polytech.ig5.mnm.userms.services.CompanyService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     CompanyService service;
@@ -45,8 +51,8 @@ public class CompanyController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> create(@RequestBody Company company) {
-        //Company work = modelMapper.map(workDTO, Work.class);
+    public ResponseEntity<Object> create(@Valid @RequestBody CompanyCreateDTO companyDTO) {
+        Company company = modelMapper.map(companyDTO, Company.class);
         Company companyCreated = service.create(company);
 
         return ResponseEntity
