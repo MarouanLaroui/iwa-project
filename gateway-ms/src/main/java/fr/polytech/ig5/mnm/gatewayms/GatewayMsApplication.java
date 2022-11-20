@@ -33,7 +33,7 @@ public class GatewayMsApplication {
 						.and()
 						.uri(offerMsURI))
 
-				.route("r3", r -> r.path("/recruitment/**")
+				.route("r3", r -> r.path("/recruitments/**")
 						.and()
 						.uri(recruitmentMsURI))
 				.build();
