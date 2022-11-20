@@ -1,18 +1,23 @@
 package fr.polytech.ig5.mnm.offerms.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Data;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Entity
 @Table(name="criterias")
 public class Criteria {
+
     @Id
-    private Long workerId;
+    @GeneratedValue()
+    private UUID criteriaId;
+
+    @Column(name="worker_id", nullable = false)
+    private UUID workerId;
 
     @Column(name="contract_type")
     private String contractType;
@@ -27,10 +32,10 @@ public class Criteria {
     private int salaryExpectation;
 
     @Column(name="starting_date")
-    private Date startingDate;
+    private LocalDate startingDate;
 
     @Column(name="end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column
     private String location;

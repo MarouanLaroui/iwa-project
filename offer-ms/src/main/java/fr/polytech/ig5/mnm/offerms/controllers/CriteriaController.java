@@ -1,18 +1,26 @@
 package fr.polytech.ig5.mnm.offerms.controllers;
 
+import fr.polytech.ig5.mnm.offerms.DTO.CriteriaCreateDTO;
+import fr.polytech.ig5.mnm.offerms.DTO.CriteriaUpdateDTO;
 import fr.polytech.ig5.mnm.offerms.models.Criteria;
 import fr.polytech.ig5.mnm.offerms.services.CriteriaService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/criterias") // 1
 public class CriteriaController {
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     CriteriaService service;
@@ -22,31 +30,74 @@ public class CriteriaController {
     }
 
     @GetMapping("/")
-    public List<Criteria> index() {
-        return this.service.findAll();
+    public ResponseEntity<Object> index() {
+        List<Criteria> criterias = this.service.findAll();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(criterias);
     }
 
     @GetMapping("/{id}")
-    public Optional<Criteria> get(@PathVariable("id") Long id) {
-        return this.service.find(id);
+    public ResponseEntity<Object> get(@PathVariable("id") UUID id) {
+        Optional<Criteria> criteria = this.service.find(id);
+
+        if(criteria.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Criteria not found");
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(criteria);
     }
 
-    @PostMapping("/create")
-    public Criteria create(@RequestBody Criteria application) {
-        return this.service.create(application);
+    @PostMapping("/")
+    public ResponseEntity<Object> create(@Valid @RequestBody CriteriaCreateDTO criteriaDTO) {
+        Criteria criteria = this.service.create(modelMapper.map(criteriaDTO, Criteria.class));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(criteria);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody CriteriaUpdateDTO criteriaDTO) {
+        // on s'assure qu'il à bien le bon id
+        criteriaDTO.setCriteriaId(id);
+
+        Optional<Criteria> criteria = this.service.find(id);
+        if(criteria.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Criteria not found");
+        }
+
+        Criteria newCriteria = modelMapper.map(criteriaDTO, Criteria.class);
+        newCriteria.setWorkerId(criteria.get().getWorkerId());
+
+        Criteria updatedCriteria =
+                service.update(newCriteria);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedCriteria);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deleteOffer(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteOffer(@PathVariable UUID id) {
 
         var isRemoved = this.service.delete(id);
 
         if (!isRemoved) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Criteria not found");
         }
 
-        // doesn't work, empty return in postman
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(id);
     }
 
 

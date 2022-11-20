@@ -2,28 +2,40 @@ package fr.polytech.ig5.mnm.offerms.models;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Entity
 @Table(name="offers")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Offer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue()
+    private UUID offerId;
+
+    @Column(name = "company_id")
+    private UUID companyId;
 
     @Column(nullable = false)
     private String description;
 
-    @Column(name="creation_date")
-    private Date creationDate;
+    @Column(name = "creation_date")
+    private LocalDate creationDate;
 
-    @Column(name="starting_date")
-    private Date startingDate;
+    @Column(name = "starting_date")
+    private LocalDate startingDate;
 
-    @Column(name="end_date")
-    private Date endDate;
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
     @Column(nullable = false, name = "contract_type")
     private ContractType contractType;
@@ -31,19 +43,16 @@ public class Offer {
     @Column()
     private int salary;
 
+    @Column()
+    private String location;
+
     @Column(name = "nb_of_hours")
     private int nbOfHours;
 
-    @Column(name="need_driving_license")
+    @Column(name = "need_driving_license")
     private Boolean needDrivingLicence;
 
-    /*
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Application> applications;
-     */
-
-    @Column(name="led_to_job")
+    @Column(name = "led_to_job")
     private Boolean ledToJob;
 
-    public Offer() {}
 }
