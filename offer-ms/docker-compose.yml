@@ -30,6 +30,7 @@ services:
     networks:
       - iwa-offer-network
       - kafka_iwa-kafka-network
+      - gateway
 
 volumes:
   iwa-offer-db-volume:
@@ -38,4 +39,6 @@ volumes:
 networks:
   iwa-offer-network:
   kafka_iwa-kafka-network:
+    external: true
+  gateway:
     external: true
