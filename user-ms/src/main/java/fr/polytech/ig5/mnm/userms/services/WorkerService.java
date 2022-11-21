@@ -28,6 +28,10 @@ public class WorkerService {
         return (List<Worker>) this.repository.findAll();
     }
 
+    public Optional<Worker> findByEmail(String email) {
+        return this.repository.findByEmail(email);
+    }
+
     public Optional<Worker> find(final UUID id) {
         return repository.findById(id);
     }
