@@ -26,6 +26,7 @@ services:
       - 8083:8080
     networks:
       - iwa-recruitment-network
+      - gateway
 
 volumes:
   iwa-recruitment-db-volume:
@@ -33,3 +34,5 @@ volumes:
 
 networks:
   iwa-recruitment-network:
+  gateway:
+    external: true
