@@ -4,3 +4,11 @@ services:
     build: .
     ports:
       - 8080:8080
+    networks:
+      - gateway
+    environment:
+      USER_MS_URI: iwa-user-app:8080
+
+networks:
+  gateway:
+    name: "gateway"
