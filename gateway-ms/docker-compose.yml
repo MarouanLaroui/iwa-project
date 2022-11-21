@@ -8,6 +8,8 @@ services:
       - gateway
     environment:
       USER_MS_URI: iwa-user-app:8080
+      OFFER_MS_URI: iwa-offer-app:8080
+      RECRUITMENT_MS_URI: iwa-recruitment-app:8080
 
 networks:
   gateway:
