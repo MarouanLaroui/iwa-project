@@ -18,6 +18,7 @@ public class GatewayMsApplication {
 	@Autowired
 	private Environment env;
 
+
 	@Bean
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
 		String userMsURI  = "http://" + env.getProperty("USER_MS_URI");
