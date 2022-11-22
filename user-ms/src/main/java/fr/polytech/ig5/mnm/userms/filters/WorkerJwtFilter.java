@@ -41,13 +41,16 @@ public class WorkerJwtFilter extends OncePerRequestFilter {
                 if (id == null) {
                     response.reset();
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    return;
+                } else {
+                    request.getRequestDispatcher(request.getServletPath()).forward(request, response);
                 }
-                chain.doFilter(request, response);
+                // chain.doFilter(request, response);
             } catch (IllegalArgumentException e) {
                 logger.warn("Unable to decode JWT");
             } catch (ExpiredJwtException e) {
                 logger.warn("JWT has expired");
+                response.reset();
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
         } else {
             logger.warn("No JWT in the request");
