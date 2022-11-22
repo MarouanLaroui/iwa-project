@@ -59,7 +59,7 @@ public class WorkerController {
                 .status(HttpStatus.OK)
                 .body(worker);    }
 
-    @PostMapping("/")
+    @PostMapping("/register")
     public ResponseEntity<Object> create(@Valid @RequestBody WorkerCreateDTO workerDTO) {
         workerDTO.setPassword(passwordEncoder.encode(workerDTO.getPassword()));
         Worker worker = modelMapper.map(workerDTO, Worker.class);
@@ -84,7 +84,6 @@ public class WorkerController {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("workerId", worker.getId());
-        claims.put("firstName", worker.getFirstName());
 
         if (passwordEncoder.matches(workerLoginDTO.getPassword(), worker.getPassword())) {
             String token = jwtUtils.createJWT(claims, 1 * 60 * 60 * 1000);
