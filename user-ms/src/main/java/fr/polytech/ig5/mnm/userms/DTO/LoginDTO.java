@@ -6,12 +6,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-public class WorkerLoginDTO {
+public class LoginDTO {
 
-    @NotEmpty(message = "a worker must have an email")
+    @NotEmpty(message = "a user must have an email")
     @Email
     private String email;
 
-    @NotEmpty(message = "a worker must have a password")
+    @NotEmpty(message = "a user must have a password")
     private String password;
 }

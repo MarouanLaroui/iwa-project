@@ -1,7 +1,7 @@
 package fr.polytech.ig5.mnm.userms.controllers;
 
 import fr.polytech.ig5.mnm.userms.DTO.WorkerCreateDTO;
-import fr.polytech.ig5.mnm.userms.DTO.WorkerLoginDTO;
+import fr.polytech.ig5.mnm.userms.DTO.LoginDTO;
 import fr.polytech.ig5.mnm.userms.DTO.WorkerUpdateDTO;
 import fr.polytech.ig5.mnm.userms.models.Worker;
 import fr.polytech.ig5.mnm.userms.services.WorkerService;
@@ -71,9 +71,9 @@ public class WorkerController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@Valid @RequestBody WorkerLoginDTO workerLoginDTO) {
+    public ResponseEntity<Object> login(@Valid @RequestBody LoginDTO loginDTO) {
 
-        String email = workerLoginDTO.getEmail();
+        String email = loginDTO.getEmail();
 
         Optional<Worker> optionalWorker = this.service.findByEmail(email);
         if (optionalWorker.isEmpty()) return ResponseEntity
@@ -85,7 +85,7 @@ public class WorkerController {
         Map<String, Object> claims = new HashMap<>();
         claims.put("workerId", worker.getId());
 
-        if (passwordEncoder.matches(workerLoginDTO.getPassword(), worker.getPassword())) {
+        if (passwordEncoder.matches(loginDTO.getPassword(), worker.getPassword())) {
             String token = jwtUtils.createJWT(claims, 1 * 60 * 60 * 1000);
             return ResponseEntity
                     .status(HttpStatus.CREATED)

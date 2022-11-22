@@ -24,12 +24,15 @@ public class CompanyService {
     }
 
     public List<Company> findAll() {
-        // TODO: find better alternative to type cast
         return (List<Company>) this.repository.findAll();
     }
 
     public Optional<Company> find(final UUID id) {
         return repository.findById(id);
+    }
+
+    public Optional<Company> findByEmail(String email) {
+        return this.repository.findCompanyByEmail(email);
     }
 
     public Company create(Company user) {

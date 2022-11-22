@@ -20,6 +20,9 @@ public class Company {
     @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private String password;
+
     @Column(name="employees_number")
     private String employeesNumber;
 

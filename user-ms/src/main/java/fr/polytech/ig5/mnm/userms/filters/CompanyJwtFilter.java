@@ -16,12 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class WorkerJwtFilter extends OncePerRequestFilter {
+public class CompanyJwtFilter extends OncePerRequestFilter {
 
     @Autowired
     JwtUtils jwtUtils;
 
-    Logger logger = LoggerFactory.getLogger(WorkerJwtFilter.class);
+    Logger logger = LoggerFactory.getLogger(CompanyJwtFilter.class);
 
     @Override
     public void doFilterInternal(
@@ -37,7 +37,7 @@ public class WorkerJwtFilter extends OncePerRequestFilter {
             String token = requestTokenHeader.substring(7);
             try {
                 Claims tokenClaims = this.jwtUtils.decodeJWT(token);
-                String id = (String) tokenClaims.get("workerId");
+                String id = (String) tokenClaims.get("companyId");
                 if (id == null) {
                     response.reset();
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -60,6 +60,6 @@ public class WorkerJwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request)
             throws ServletException {
         String path = request.getRequestURI();
-        return "/workers/register".equals(path) || "/workers/login".equals(path) || path.matches("/companies/.*");
+        return "/companies/register".equals(path) || "/companies/login".equals(path);
     }
 }

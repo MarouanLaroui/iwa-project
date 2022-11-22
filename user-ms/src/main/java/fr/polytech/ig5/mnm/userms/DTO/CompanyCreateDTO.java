@@ -18,6 +18,9 @@ public class CompanyCreateDTO {
     @Email
     private String email;
 
+    @NotEmpty(message = "a company must have a password")
+    private String password;
+
     @NotNull(message = "a company must have an employees number")
     @Min(1)
     private Integer employeesNumber;
