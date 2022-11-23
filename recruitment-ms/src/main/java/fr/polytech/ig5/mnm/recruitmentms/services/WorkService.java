@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -24,7 +25,7 @@ public class WorkService {
         return (List<Work>) this.repository.findAll();
     }
 
-    public Optional<Work> find(final Long id) {
+    public Optional<Work> find(final UUID id) {
         return repository.findById(id);
     }
 
@@ -36,7 +37,7 @@ public class WorkService {
         return this.repository.save(work);
     }
 
-    public Boolean delete(final Long id) {
+    public Boolean delete(final UUID id) {
         try {
             repository.deleteById(id);
             return true;
