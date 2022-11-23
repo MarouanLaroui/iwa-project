@@ -21,9 +21,9 @@ public class GatewayMsApplication {
 
 	@Bean
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-		String userMsURI  = "http://" + env.getProperty("USER_MS_URI");
-		String offerMsURI  = "http://" + env.getProperty("OFFER_MS_URI");
-		String recruitmentMsURI  = "http://" + env.getProperty("RECRUITMENT_MS_URI");
+		String userMsURI  = env.getProperty("USER_MS_URI");
+		String offerMsURI  = env.getProperty("OFFER_MS_URI");
+		String recruitmentMsURI  = env.getProperty("RECRUITMENT_MS_URI");
 
 		return builder.routes()
 				.route("r1", r -> r.path("/workers/**")
