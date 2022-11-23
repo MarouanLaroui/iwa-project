@@ -69,4 +69,12 @@ public class WorkService {
             return false;
         }
     }
+
+    public List<Work> findByCompanyId(UUID companyId){
+        return this.repository.findWorksByCompanyId(companyId);
+    }
+
+    public List<Work> findByWorkerId(UUID workerId){
+        return this.repository.findWorksByWorkerId(workerId);
+    }
 }
