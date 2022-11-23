@@ -1,6 +1,8 @@
 package fr.polytech.ig5.mnm.offerms.services;
 import fr.polytech.ig5.mnm.offerms.models.Criteria;
 import fr.polytech.ig5.mnm.offerms.repositories.CriteriaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +55,8 @@ public class CriteriaService{
             return true;
         }
         catch (Exception e){
+            Logger logger = LoggerFactory.getLogger(CriteriaService.class);
+            logger.warn("Failed to delete criteria associated from WORKER_DELETED TOPIC " + e.getMessage());
             return false;
         }
     }

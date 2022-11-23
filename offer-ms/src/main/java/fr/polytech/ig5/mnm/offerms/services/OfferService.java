@@ -1,6 +1,8 @@
 package fr.polytech.ig5.mnm.offerms.services;
 import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.repositories.OfferRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +54,8 @@ public class OfferService{
             return true;
         }
         catch (Exception e){
+            Logger logger = LoggerFactory.getLogger(OfferService.class);
+            logger.warn("Failed to delete offer associated from COMPANY_DELETED TOPIC " + e.getMessage());
             return false;
         }
     }
