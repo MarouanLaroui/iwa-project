@@ -3,6 +3,7 @@ import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.repositories.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,17 @@ public class OfferService{
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @Transactional
+    public Boolean deleteByCompanyId(UUID workerId){
+        try{
+            this.repository.deleteByCompanyId(workerId);
+            return true;
+        }
+        catch (Exception e){
             return false;
         }
     }

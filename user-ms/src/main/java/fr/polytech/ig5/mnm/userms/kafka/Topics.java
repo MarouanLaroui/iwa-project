@@ -8,7 +8,12 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class Topics {
     @Bean
-    public NewTopic userDeletedTopic(){
-        return TopicBuilder.name("USER_DELETED").build();
+    public NewTopic workerDeletedTopic(){
+        return TopicBuilder.name("WORKER_DELETED").build();
+    }
+
+    @Bean
+    public NewTopic companyDeletedTopic(){
+        return TopicBuilder.name("COMPANY_DELETED").build();
     }
 }

@@ -3,6 +3,7 @@ import fr.polytech.ig5.mnm.offerms.models.Application;
 import fr.polytech.ig5.mnm.offerms.repositories.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,17 @@ public class ApplicationService{
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @Transactional
+    public Boolean deleteByWorkerId(UUID workerId){
+        try{
+            this.repository.deleteByWorkerId(workerId);
+            return true;
+        }
+        catch (Exception e){
             return false;
         }
     }
