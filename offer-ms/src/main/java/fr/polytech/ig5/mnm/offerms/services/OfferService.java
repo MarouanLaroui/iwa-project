@@ -59,4 +59,8 @@ public class OfferService{
             return false;
         }
     }
+
+    public List<Offer> findByCompanyId(UUID companyId) {
+        return this.repository.findOfferByCompanyId(companyId);
+    }
 }
