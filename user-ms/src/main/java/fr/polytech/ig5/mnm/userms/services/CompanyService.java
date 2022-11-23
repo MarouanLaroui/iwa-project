@@ -1,5 +1,6 @@
 package fr.polytech.ig5.mnm.userms.services;
 
+import fr.polytech.ig5.mnm.userms.kafka.KafkaProducer;
 import fr.polytech.ig5.mnm.userms.models.Company;
 import fr.polytech.ig5.mnm.userms.repositories.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,14 @@ import java.util.UUID;
 @Service
 public class CompanyService {
 
-    @Autowired
     private CompanyRepository repository;
 
-    public CompanyService(CompanyRepository repository) {
+    private KafkaProducer producer;
+
+    @Autowired
+    public CompanyService(CompanyRepository repository, KafkaProducer producer) {
         this.repository = repository;
+        this.producer = producer;
     }
 
     public List<Company> findAll() {
@@ -39,6 +43,7 @@ public class CompanyService {
     public Boolean delete(final UUID id) {
         try {
             repository.deleteById(id);
+            this.producer.sendMessage("COMPANY_DELETED", String.valueOf(id));
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());

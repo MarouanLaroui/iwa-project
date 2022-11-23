@@ -23,10 +23,12 @@ services:
       spring.datasource.password: $POSTGRES_PASSWORD
       spring.datasource.name: $POSTGRES_DB
       GATEWAY_MS_URI: iwa-gateway-app:8080
+      spring.kafka.bootstrap-servers: kafka1:9092
     ports:
       - 8083:8080
     networks:
       - iwa-recruitment-network
+      - kafka_iwa-kafka-network
       - gateway
 
 volumes:
@@ -35,5 +37,7 @@ volumes:
 
 networks:
   iwa-recruitment-network:
+  kafka_iwa-kafka-network:
+    external: true
   gateway:
     external: true

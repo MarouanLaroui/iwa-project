@@ -8,5 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface WorkRepository extends CrudRepository<Work, UUID> {
-
+    UUID deleteByCompanyId(UUID companyId);
+    UUID deleteByWorkerId(UUID workerId);
 }
