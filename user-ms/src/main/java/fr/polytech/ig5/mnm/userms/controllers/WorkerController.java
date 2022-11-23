@@ -116,7 +116,7 @@ public class WorkerController {
         worker.setFirstName(workerDTO.getFirstName() == null ? worker.getFirstName() : workerDTO.getFirstName());
         worker.setLastName(workerDTO.getLastName() == null ? worker.getLastName() : workerDTO.getLastName());
         worker.setEmail(workerDTO.getEmail() == null ? worker.getEmail() : workerDTO.getEmail());
-        worker.setPassword(workerDTO.getPassword() == null ? worker.getPassword() : workerDTO.getPassword());
+        worker.setPassword(workerDTO.getPassword() == null ? worker.getPassword() : passwordEncoder.encode(workerDTO.getPassword()));
         worker.setCvLink(workerDTO.getCvLink() == null ? worker.getCvLink() : workerDTO.getCvLink());
         worker.setBirthDate(workerDTO.getBirthDate() == null ? worker.getBirthDate() : workerDTO.getBirthDate());
         worker.setHasDrivingLicense(workerDTO.getHasDrivingLicense() == null ? worker.getHasDrivingLicense() : workerDTO.getHasDrivingLicense());
@@ -129,9 +129,10 @@ public class WorkerController {
                 .body(updatedWorker);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deletePost(@PathVariable UUID id) {
-        Boolean isRemoved = this.service.delete(id);
+    @DeleteMapping(value = "/")
+    public ResponseEntity<Object> deletePost(@RequestHeader (name="Authorization") String bearerToken) {
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+        Boolean isRemoved = this.service.delete(workerId);
 
         if(!isRemoved){
             return ResponseEntity
@@ -141,7 +142,7 @@ public class WorkerController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(id);    }
+                .body("Deleted worker of ID " + workerId);    }
 
 
 }
