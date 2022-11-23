@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -25,10 +26,10 @@ public class Work {
     private String jobLabel;
 
     @Column(name="starting_date")
-    private Date startingDate;
+    private LocalDate startingDate;
 
     @Column(name="end_date")
-    private Date end_date;
+    private LocalDate endDate;
 
     @Column(name="is_rated_by_employee")
     private Boolean isRatedByEmployee;
