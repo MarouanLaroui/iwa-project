@@ -37,6 +37,14 @@ public class OfferController {
                 .body(offers);
     }
 
+    @GetMapping("/findByCompanyId/{companyId}")
+    public ResponseEntity<Object> findByCompanyId(@PathVariable("companyId") UUID companyId) {
+        List<Offer> offers = this.service.findByCompanyId(companyId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(offers);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> get(@PathVariable("id") UUID id) {
         Optional<Offer> offer = this.service.find(id);

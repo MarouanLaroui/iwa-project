@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
+import java.util.UUID;
 
 @Data
 public class ApplicationCreateDTO {
@@ -18,7 +19,7 @@ public class ApplicationCreateDTO {
     private Boolean isValidatedByWorker = false;
 
     // envoyer dans le token plus tard? donc pas besoin de verif dans le DTO
-    private Long workerId;
+    private UUID workerId;
 
     //private Long offerId;
 

@@ -26,6 +26,9 @@ public class Offer {
     private UUID companyId;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String description;
 
     @Column(name = "creation_date")

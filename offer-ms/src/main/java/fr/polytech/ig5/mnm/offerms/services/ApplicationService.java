@@ -1,5 +1,6 @@
 package fr.polytech.ig5.mnm.offerms.services;
 import fr.polytech.ig5.mnm.offerms.models.Application;
+import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.repositories.ApplicationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,14 @@ public class ApplicationService{
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    public List<Application> findByWorkerId(UUID workerId) {
+        return this.repository.findApplicationsByWorkerId(workerId);
+    }
+
+    public List<Application> findByOffer(Offer offer) {
+        return this.repository.findApplicationsByOffer(offer);
     }
 
     @Transactional
