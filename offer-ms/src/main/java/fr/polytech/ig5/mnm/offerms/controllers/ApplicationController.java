@@ -42,6 +42,30 @@ public class ApplicationController {
                 .body(applications);
     }
 
+    @GetMapping("/applications/findByWorkerId/{workerId}")
+    public ResponseEntity<Object> findByWorkerId(@PathVariable("workerId") UUID workerId) {
+        List <Application> applications = this.applicationService.findByWorkerId(workerId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(applications);
+    }
+
+    @GetMapping("/applications/findByOfferId/{offerId}")
+    public ResponseEntity<Object> findByOfferId(@PathVariable("offerId") UUID offerId) {
+        Optional<Offer> offer = offerService.find(offerId);
+
+        if(offer.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Offer not found");
+        }
+
+        List <Application> applications = this.applicationService.findByOffer(offer.get());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(applications);
+    }
+
     @GetMapping("/applications/{id}")
     public ResponseEntity<Object> get(@PathVariable("id") UUID id) {
         Optional<Application> application = this.applicationService.find(id);
