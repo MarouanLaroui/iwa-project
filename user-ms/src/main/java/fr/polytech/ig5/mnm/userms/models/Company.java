@@ -17,8 +17,11 @@ public class Company {
     @Column()
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String password;
 
     @Column(name="employees_number")
     private String employeesNumber;

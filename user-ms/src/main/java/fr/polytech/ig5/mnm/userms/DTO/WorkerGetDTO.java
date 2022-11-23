@@ -3,11 +3,13 @@ package fr.polytech.ig5.mnm.userms.DTO;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
-public class WorkerUpdateDTO {
+public class WorkerGetDTO {
+
+    private UUID id;
 
     private String firstName;
 
@@ -15,8 +17,6 @@ public class WorkerUpdateDTO {
 
     @Email
     private String email;
-
-    private String password;
 
     private LocalDate birthDate;
 

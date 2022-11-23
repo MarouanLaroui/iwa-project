@@ -4,23 +4,14 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
 
 @Data
-public class WorkerUpdateDTO {
+public class LoginDTO {
 
-    private String firstName;
-
-    private String lastName;
-
+    @NotEmpty(message = "a user must have an email")
     @Email
     private String email;
 
+    @NotEmpty(message = "a user must have a password")
     private String password;
-
-    private LocalDate birthDate;
-
-    private String cvLink;
-
-    private Boolean hasDrivingLicense;
 }

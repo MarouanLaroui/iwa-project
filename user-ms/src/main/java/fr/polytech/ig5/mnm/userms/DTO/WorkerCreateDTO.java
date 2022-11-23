@@ -19,6 +19,9 @@ public class WorkerCreateDTO {
     @Email
     private String email;
 
+    @NotEmpty(message = "a worker must have a password")
+    private String password;
+
     private Date birthDate;
     private String cvLink;
     private Boolean hasDrivingLicense;

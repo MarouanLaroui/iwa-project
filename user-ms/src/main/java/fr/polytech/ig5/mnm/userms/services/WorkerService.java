@@ -3,6 +3,8 @@ package fr.polytech.ig5.mnm.userms.services;
 import fr.polytech.ig5.mnm.userms.kafka.KafkaProducer;
 import fr.polytech.ig5.mnm.userms.models.Worker;
 import fr.polytech.ig5.mnm.userms.repositories.WorkerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ public class WorkerService {
 
     private KafkaProducer producer;
 
+    private Logger logger = LoggerFactory.getLogger(WorkerService.class);
+
     @Autowired
     public WorkerService(WorkerRepository repository, KafkaProducer producer) {
         this.repository = repository;
@@ -24,8 +28,11 @@ public class WorkerService {
     }
 
     public List<Worker> findAll() {
-        // TODO: find better alternative to type cast
         return (List<Worker>) this.repository.findAll();
+    }
+
+    public Optional<Worker> findByEmail(String email) {
+        return this.repository.findByEmail(email);
     }
 
     public Optional<Worker> find(final UUID id) {
@@ -46,7 +53,7 @@ public class WorkerService {
             this.producer.sendMessage("WORKER_DELETED", String.valueOf(id));
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.warn(e.getMessage());
             return false;
         }
     }

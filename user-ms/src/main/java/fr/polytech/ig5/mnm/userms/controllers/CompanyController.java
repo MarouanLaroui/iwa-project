@@ -1,21 +1,19 @@
 package fr.polytech.ig5.mnm.userms.controllers;
 
-import fr.polytech.ig5.mnm.userms.DTO.CompanyCreateDTO;
-import fr.polytech.ig5.mnm.userms.DTO.CompanyUpdateDTO;
-import fr.polytech.ig5.mnm.userms.DTO.WorkerUpdateDTO;
+import fr.polytech.ig5.mnm.userms.DTO.*;
 import fr.polytech.ig5.mnm.userms.models.Company;
 import fr.polytech.ig5.mnm.userms.models.Worker;
 import fr.polytech.ig5.mnm.userms.services.CompanyService;
+import fr.polytech.ig5.mnm.userms.utils.JwtUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/companies")
@@ -23,6 +21,12 @@ public class CompanyController {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @Autowired
     CompanyService service;
@@ -54,14 +58,42 @@ public class CompanyController {
                 .body(company);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Object> create(@Valid @RequestBody CompanyCreateDTO companyDTO) {
-        Company company = modelMapper.map(companyDTO, Company.class);
+    @PostMapping("/register")
+    public ResponseEntity<Object> create(@Valid @RequestBody CompanyCreateDTO companyCreateDTO) {
+        companyCreateDTO.setPassword(passwordEncoder.encode(companyCreateDTO.getPassword()));
+        Company company = modelMapper.map(companyCreateDTO, Company.class);
         Company companyCreated = service.create(company);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(companyCreated);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@Valid @RequestBody LoginDTO loginDTO) {
+
+        String email = loginDTO.getEmail();
+
+        Optional<Company> optionalCompany = this.service.findByEmail(email);
+        if (optionalCompany.isEmpty()) return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("This account does not exist");
+
+        Company company = optionalCompany.get();
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("companyId", company.getId());
+
+        if (passwordEncoder.matches(loginDTO.getPassword(), company.getPassword())) {
+            String token = jwtUtils.createJWT(claims, 1 * 60 * 60 * 1000);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(token);
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("Wrong password");
     }
 
     @PutMapping(value = "/{id}")
