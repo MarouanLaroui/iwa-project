@@ -6,6 +6,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -61,7 +62,15 @@ public class CompanyJwtFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request)
             throws ServletException {
+        AntPathRequestMatcher postLoginMatcher = new AntPathRequestMatcher("/companies/login", "POST");
+        AntPathRequestMatcher postRegisterMatcher = new AntPathRequestMatcher("/companies/register", "POST");
+        AntPathRequestMatcher getAllCompaniesMatcher = new AntPathRequestMatcher("/companies/", "GET");
+        AntPathRequestMatcher getCompanyByIdMatcher = new AntPathRequestMatcher("/companies/**", "GET");
         String path = request.getRequestURI();
-        return "/companies/register".equals(path) || "/companies/login".equals(path) || path.matches("/workers/.*");
+        return postLoginMatcher.matches(request) ||
+                postRegisterMatcher.matches(request) ||
+                getAllCompaniesMatcher.matches(request) ||
+                getCompanyByIdMatcher.matches(request) ||
+                path.matches("/workers/.*");
     }
 }
