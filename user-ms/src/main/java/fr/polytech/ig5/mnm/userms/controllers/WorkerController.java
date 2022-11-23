@@ -2,6 +2,7 @@ package fr.polytech.ig5.mnm.userms.controllers;
 
 import fr.polytech.ig5.mnm.userms.DTO.WorkerCreateDTO;
 import fr.polytech.ig5.mnm.userms.DTO.LoginDTO;
+import fr.polytech.ig5.mnm.userms.DTO.WorkerGetDTO;
 import fr.polytech.ig5.mnm.userms.DTO.WorkerUpdateDTO;
 import fr.polytech.ig5.mnm.userms.models.Worker;
 import fr.polytech.ig5.mnm.userms.services.WorkerService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/workers")
@@ -41,9 +43,14 @@ public class WorkerController {
     @GetMapping("/")
     public ResponseEntity<Object> index() {
         List<Worker> workers = this.service.findAll();
+
+        List<WorkerGetDTO> workersPurified = workers.stream()
+                .map(worker -> modelMapper.map(worker, WorkerGetDTO.class))
+                .toList();
+
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(workers);
+                .body(workersPurified);
     }
 
     @GetMapping("/{id}")
@@ -56,15 +63,20 @@ public class WorkerController {
                     .body("Worker not found");
         }
 
+        WorkerGetDTO workerPurified =
+                modelMapper.map(worker.get(), WorkerGetDTO.class);
+
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(worker);    }
+                .body(workerPurified);    }
 
     @PostMapping("/register")
     public ResponseEntity<Object> create(@Valid @RequestBody WorkerCreateDTO workerDTO) {
         workerDTO.setPassword(passwordEncoder.encode(workerDTO.getPassword()));
         Worker worker = modelMapper.map(workerDTO, Worker.class);
-        Worker workerCreated = service.create(worker);
+
+        WorkerGetDTO workerCreated =
+                modelMapper.map(service.create(worker), WorkerGetDTO.class);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -121,8 +133,9 @@ public class WorkerController {
         worker.setBirthDate(workerDTO.getBirthDate() == null ? worker.getBirthDate() : workerDTO.getBirthDate());
         worker.setHasDrivingLicense(workerDTO.getHasDrivingLicense() == null ? worker.getHasDrivingLicense() : workerDTO.getHasDrivingLicense());
 
-        Worker updatedWorker =
-                service.update(worker);
+        WorkerGetDTO updatedWorker =
+                modelMapper.map(service.update(worker), WorkerGetDTO.class);
+
 
         return ResponseEntity
                 .status(HttpStatus.OK)
