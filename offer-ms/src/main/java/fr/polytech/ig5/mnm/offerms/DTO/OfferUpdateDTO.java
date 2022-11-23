@@ -15,6 +15,9 @@ public class OfferUpdateDTO {
     @NotNull(message = "to be updated an offer must have an id")
     private UUID offerId;
 
+    @NotEmpty(message = "an offer must have a title")
+    private String title;
+
     @NotEmpty(message = "an offer must have a description")
     private String description;
 

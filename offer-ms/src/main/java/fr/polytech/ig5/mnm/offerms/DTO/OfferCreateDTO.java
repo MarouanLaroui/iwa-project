@@ -2,12 +2,9 @@ package fr.polytech.ig5.mnm.offerms.DTO;
 
 import fr.polytech.ig5.mnm.offerms.models.ContractType;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -16,6 +13,9 @@ public class OfferCreateDTO {
 
     @NotEmpty(message = "an offer must have a description")
     private String description;
+
+    @NotEmpty(message = "an offer must have a title")
+    private String title;
 
     private UUID companyId;
 
