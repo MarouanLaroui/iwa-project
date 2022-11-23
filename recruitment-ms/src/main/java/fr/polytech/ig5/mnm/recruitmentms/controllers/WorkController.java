@@ -38,6 +38,23 @@ public class WorkController {
                 .body(works);
     }
 
+    @GetMapping("/findByCompanyId/{companyId}")
+    public ResponseEntity<Object> findByCompanyId(@PathVariable(name = "companyId") UUID companyId) {
+        List<Work> works = this.service.findByCompanyId(companyId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(works);
+    }
+
+    @GetMapping("/findByWorkerId/{workerId}")
+    public ResponseEntity<Object> findByWorkerId(@PathVariable(name = "workerId") UUID workerId) {
+        List<Work> works = this.service.findByWorkerId(workerId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(works);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> getById(@PathVariable(name = "id") UUID id) {
         Optional<Work> work = service.find(id);
