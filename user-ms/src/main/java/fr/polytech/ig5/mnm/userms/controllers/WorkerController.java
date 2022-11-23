@@ -155,7 +155,7 @@ public class WorkerController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("Deleted worker of ID " + workerId);    }
+                .body(workerId);    }
 
 
 }
