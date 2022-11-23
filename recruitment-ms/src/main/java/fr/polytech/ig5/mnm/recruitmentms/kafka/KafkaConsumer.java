@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class KafkaConsumer {
     WorkService workService;
@@ -16,12 +18,12 @@ public class KafkaConsumer {
 
     @KafkaListener(topics="WORKER_DELETED", groupId = "1")
     void workerDeletedListener(String workerId){
-        this.workService.deleteByWorkerId(Long.valueOf(workerId));
+        this.workService.deleteByWorkerId(UUID.fromString(workerId));
     }
 
     @KafkaListener(topics="COMPANY_DELETED", groupId = "1")
     void companyDeletedListner(String companyId){
-        this.workService.deleteByCompanyId(Long.valueOf(companyId));
+        this.workService.deleteByCompanyId(UUID.fromString(companyId));
     }
 
 }

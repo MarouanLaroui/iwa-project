@@ -49,7 +49,7 @@ public class WorkService {
     }
 
     @Transactional
-    public Boolean deleteByWorkerId(Long workerId){
+    public Boolean deleteByWorkerId(UUID workerId){
         try{
             this.repository.deleteByWorkerId(workerId);
             return true;
@@ -60,7 +60,7 @@ public class WorkService {
     }
 
     @Transactional
-    public Boolean deleteByCompanyId(Long companyId){
+    public Boolean deleteByCompanyId(UUID companyId){
         try{
             this.repository.deleteByCompanyId(companyId);
             return true;
