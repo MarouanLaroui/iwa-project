@@ -4,6 +4,7 @@ import fr.polytech.ig5.mnm.recruitmentms.models.Work;
 import fr.polytech.ig5.mnm.recruitmentms.repositories.WorkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,28 @@ public class WorkService {
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @Transactional
+    public Boolean deleteByWorkerId(Long workerId){
+        try{
+            this.repository.deleteByWorkerId(workerId);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    @Transactional
+    public Boolean deleteByCompanyId(Long companyId){
+        try{
+            this.repository.deleteByCompanyId(companyId);
+            return true;
+        }
+        catch (Exception e){
             return false;
         }
     }

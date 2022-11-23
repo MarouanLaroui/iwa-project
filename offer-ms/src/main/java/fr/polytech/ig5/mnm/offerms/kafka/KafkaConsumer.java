@@ -28,16 +28,12 @@ public class KafkaConsumer {
 
     @KafkaListener(topics="WORKER_DELETED", groupId = "1")
     void workerDeletedListener(String workerId){
-        System.out.println("coucou");
-        System.out.println(workerId);
         this.applicationService.deleteByWorkerId(UUID.fromString(workerId));
         this.criteriaService.deleteByWorkerId(UUID.fromString(workerId));
     }
 
     @KafkaListener(topics="COMPANY_DELETED", groupId = "1")
     void companyDeletedListner(String companyId){
-        System.out.println("coucou");
-        System.out.println(companyId);
         this.offerService.deleteByCompanyId(UUID.fromString(companyId));
     }
 
