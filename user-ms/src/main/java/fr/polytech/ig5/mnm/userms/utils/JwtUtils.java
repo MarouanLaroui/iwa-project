@@ -14,6 +14,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 @Component
 public class JwtUtils {
@@ -62,5 +63,11 @@ public class JwtUtils {
                 .parseClaimsJws(jwt)
                 .getBody();
         return claims;
+    }
+
+    public UUID extractUUIDFromJWT(String uuidClaim, String bearerToken) {
+        String token = bearerToken.split(" ")[1];
+        Claims decodedToken = this.decodeJWT(token);
+        return UUID.fromString(decodedToken.get(uuidClaim, String.class));
     }
 }

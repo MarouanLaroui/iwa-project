@@ -9,17 +9,18 @@ import java.time.LocalDate;
 @Data
 public class WorkerUpdateDTO {
 
-    @NotEmpty(message = "a worker must have a firstname")
     private String firstName;
 
-    @NotEmpty(message = "a worker must have a lastname")
     private String lastName;
 
-    @NotEmpty(message = "a worker must have an email")
     @Email
     private String email;
 
+    private String password;
+
     private LocalDate birthDate;
+
     private String cvLink;
+
     private Boolean hasDrivingLicense;
 }

@@ -6,6 +6,7 @@ import fr.polytech.ig5.mnm.userms.DTO.WorkerUpdateDTO;
 import fr.polytech.ig5.mnm.userms.models.Worker;
 import fr.polytech.ig5.mnm.userms.services.WorkerService;
 import fr.polytech.ig5.mnm.userms.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -97,18 +98,35 @@ public class WorkerController {
                 .body("Wrong password");
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> update(@PathVariable("id") UUID id,@Valid @RequestBody WorkerUpdateDTO workerDTO) {
-        Worker worker = modelMapper.map(workerDTO, Worker.class);
-        worker.setId(id);
+    public ResponseEntity<Object> update(
+            @Valid @RequestBody WorkerUpdateDTO workerDTO,
+            @RequestHeader (name="Authorization") String bearerToken
+    ) {
 
-        Worker updatedWork =
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+        Optional<Worker> optionalWorkerToUpdate = this.service.find(workerId);
+        if (optionalWorkerToUpdate.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Worker not found");
+        }
+        Worker worker = optionalWorkerToUpdate.get();
+        worker.setFirstName(workerDTO.getFirstName() == null ? worker.getFirstName() : workerDTO.getFirstName());
+        worker.setLastName(workerDTO.getLastName() == null ? worker.getLastName() : workerDTO.getLastName());
+        worker.setEmail(workerDTO.getEmail() == null ? worker.getEmail() : workerDTO.getEmail());
+        worker.setPassword(workerDTO.getPassword() == null ? worker.getPassword() : workerDTO.getPassword());
+        worker.setCvLink(workerDTO.getCvLink() == null ? worker.getCvLink() : workerDTO.getCvLink());
+        worker.setBirthDate(workerDTO.getBirthDate() == null ? worker.getBirthDate() : workerDTO.getBirthDate());
+        worker.setHasDrivingLicense(workerDTO.getHasDrivingLicense() == null ? worker.getHasDrivingLicense() : workerDTO.getHasDrivingLicense());
+
+        Worker updatedWorker =
                 service.update(worker);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(updatedWork);
+                .body(updatedWorker);
     }
 
     @DeleteMapping(value = "/{id}")
