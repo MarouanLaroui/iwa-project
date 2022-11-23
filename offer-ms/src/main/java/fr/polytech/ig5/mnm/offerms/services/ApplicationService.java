@@ -50,11 +50,11 @@ public class ApplicationService{
     }
 
     public List<Application> findByWorkerId(UUID workerId) {
-        return this.repository.findApplicationByWorkerId(workerId);
+        return this.repository.findApplicationsByWorkerId(workerId);
     }
 
     public List<Application> findByOffer(Offer offer) {
-        return this.repository.findApplicationByOffer(offer);
+        return this.repository.findApplicationsByOffer(offer);
     }
 
     @Transactional

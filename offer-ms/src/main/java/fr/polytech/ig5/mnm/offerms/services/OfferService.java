@@ -61,6 +61,6 @@ public class OfferService{
     }
 
     public List<Offer> findByCompanyId(UUID companyId) {
-        return this.repository.findOfferByCompanyId(companyId);
+        return this.repository.findOffersByCompanyId(companyId);
     }
 }

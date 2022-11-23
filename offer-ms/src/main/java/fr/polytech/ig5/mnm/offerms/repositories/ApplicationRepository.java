@@ -11,9 +11,9 @@ import java.util.UUID;
 @Repository
 public interface ApplicationRepository extends CrudRepository<Application, UUID> {
 
-    List<Application> findApplicationByWorkerId(UUID workerId);
+    List<Application> findApplicationsByWorkerId(UUID workerId);
 
-    List<Application> findApplicationByOffer(Offer offer);
+    List<Application> findApplicationsByOffer(Offer offer);
 
     UUID deleteByWorkerId(UUID workerId);
 }

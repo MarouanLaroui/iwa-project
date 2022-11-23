@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface OfferRepository extends CrudRepository<Offer, UUID> {
 
-    List<Offer> findOfferByCompanyId(UUID companyId);
+    List<Offer> findOffersByCompanyId(UUID companyId);
 
     UUID deleteByCompanyId(UUID companyId);
 }
