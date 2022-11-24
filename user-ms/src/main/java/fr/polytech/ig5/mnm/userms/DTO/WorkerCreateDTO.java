@@ -4,15 +4,15 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 public class WorkerCreateDTO {
 
-    @NotEmpty(message = "a worker must have a firstname")
+    @NotEmpty(message = "a worker must have a first name")
     private String firstName;
 
-    @NotEmpty(message = "a worker must have a lastname")
+    @NotEmpty(message = "a worker must have a last name")
     private String lastName;
 
     @NotEmpty(message = "a worker must have an email")
@@ -22,8 +22,14 @@ public class WorkerCreateDTO {
     @NotEmpty(message = "a worker must have a password")
     private String password;
 
-    private Date birthDate;
+    @NotEmpty(message = "a worker must have a birth date")
+    private LocalDate birthDate;
+
     private String cvLink;
+
+    @NotEmpty(message = "a worker must specify if he has his driving license")
     private Boolean hasDrivingLicense;
 
+    @NotEmpty(message = "a worker must specify if he has a car")
+    private Boolean hasCar;
 }

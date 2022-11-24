@@ -20,25 +20,27 @@ public class Worker {
     @GeneratedValue()
     private UUID id;
 
-    @Column(name="first_name")
+    @Column(name="first_name", nullable = false)
     private String firstName;
 
-    @Column(name="last_name")
+    @Column(name="last_name", nullable = false)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(name="birth_date")
+    @Column(name="birth_date", nullable = false)
     private LocalDate birthDate;
 
     @Column(name="cv_link")
     private String cvLink;
 
-    @Column(name="has_driving_license")
+    @Column(name="has_driving_license", nullable = false)
     private Boolean hasDrivingLicense;
 
+    @Column(name="has_car", nullable = false)
+    private Boolean hasCar;
 }

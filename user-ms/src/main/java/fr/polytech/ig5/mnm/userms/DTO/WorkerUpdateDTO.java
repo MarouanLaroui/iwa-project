@@ -23,4 +23,6 @@ public class WorkerUpdateDTO {
     private String cvLink;
 
     private Boolean hasDrivingLicense;
+
+    private Boolean hasCar;
 }
