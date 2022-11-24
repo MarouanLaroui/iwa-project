@@ -16,25 +16,25 @@ public class Work {
     @GeneratedValue()
     private UUID workId;
 
-    @Column(name="company_id")
+    @Column(name="company_id", nullable = false)
     private UUID companyId;
 
-    @Column(name="worker_id")
+    @Column(name="worker_id", nullable = false)
     private UUID workerId;
 
-    @Column(name="job_label")
+    @Column(name="job_label", nullable = false)
     private String jobLabel;
 
-    @Column(name="starting_date")
+    @Column(name="starting_date", nullable = false)
     private LocalDate startingDate;
 
-    @Column(name="end_date")
+    @Column(name="end_date", nullable = false)
     private LocalDate endDate;
 
-    @Column(name="is_rated_by_employee")
+    @Column(name="is_rated_by_employee", nullable = false)
     private Boolean isRatedByEmployee;
 
-    @Column(name="is_rated_by_company")
+    @Column(name="is_rated_by_company", nullable = false)
     private Boolean isRatedByCompany;
 
 }
