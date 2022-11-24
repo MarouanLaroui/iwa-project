@@ -14,22 +14,22 @@ public class Company {
     @GeneratedValue()
     private UUID id;
 
-    @Column()
+    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(name="employees_number")
+    @Column(name="employees_number", nullable = false)
     private String employeesNumber;
 
-    @Column()
+    @Column(nullable = false)
     private String description;
 
-    @Column()
+    @Column(nullable = false)
     private SectorType sector;
 
     @Column(name="picture_url")
