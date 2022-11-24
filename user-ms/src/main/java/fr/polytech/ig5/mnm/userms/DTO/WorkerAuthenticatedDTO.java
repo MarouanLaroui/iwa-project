@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
-public class WorkerGetDTO {
+public class WorkerAuthenticatedDTO {
 
     private UUID id;
 
@@ -23,4 +23,6 @@ public class WorkerGetDTO {
     private String cvLink;
 
     private Boolean hasDrivingLicense;
+
+    private String authorizationToken;
 }
