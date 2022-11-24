@@ -20,21 +20,22 @@ public class Application {
     @GeneratedValue()
     private UUID applicationId;
 
-    @Column(name="message")
-    private String message;
-
-    @Column(name="is_validated_by_company")
-    private Boolean isValidatedByCompany;
-
-    @Column(name="is_validated_by_worker")
-    private Boolean isValidatedByWorker;
-
-    @Column(name="worker_id")
+    @Column(name="worker_id", nullable = false)
     private UUID workerId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "offer_id", nullable = false)
     private Offer offer;
+
+    @Column(name="message", nullable = false)
+    private String message;
+
+    @Column(name="is_validated_by_company", nullable = false)
+    private Boolean isValidatedByCompany;
+
+    @Column(name="is_validated_by_worker", nullable = false)
+    private Boolean isValidatedByWorker;
+
 
     // add :  @OnDelete(action = OnDeleteAction.CASCADE) ?
     // add : @JsonIgnore ?

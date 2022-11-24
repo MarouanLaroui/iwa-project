@@ -2,25 +2,20 @@ package fr.polytech.ig5.mnm.offerms.DTO;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
-import java.util.UUID;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class ApplicationCreateDTO {
 
+    // offerId is given as a route param
+
+    // workerId is given in the JWT
+
+    @NotEmpty(message = "an application must have a message")
     private String message;
 
     private Boolean isValidatedByCompany = false;
 
     private Boolean isValidatedByWorker = false;
-
-    // envoyer dans le token plus tard? donc pas besoin de verif dans le DTO
-    private UUID workerId;
-
-    //private Long offerId;
-
 }
