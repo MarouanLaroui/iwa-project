@@ -3,15 +3,14 @@ package fr.polytech.ig5.mnm.userms.DTO;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Data
 public class WorkerUpdateDTO {
 
-    private String firstName;
+    private String firstname;
 
-    private String lastName;
+    private String lastname;
 
     @Email
     private String email;
@@ -23,4 +22,5 @@ public class WorkerUpdateDTO {
     private String cvLink;
 
     private Boolean hasDrivingLicense;
+
 }
