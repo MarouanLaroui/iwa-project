@@ -24,7 +24,7 @@ public class Company {
     private String password;
 
     @Column(name="employees_number", nullable = false)
-    private String employeesNumber;
+    private Integer employeesNumber;
 
     @Column(nullable = false)
     private String description;

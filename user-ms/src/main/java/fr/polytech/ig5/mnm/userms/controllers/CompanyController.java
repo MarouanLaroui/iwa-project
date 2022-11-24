@@ -2,6 +2,7 @@ package fr.polytech.ig5.mnm.userms.controllers;
 
 import fr.polytech.ig5.mnm.userms.DTO.*;
 import fr.polytech.ig5.mnm.userms.models.Company;
+import fr.polytech.ig5.mnm.userms.models.Worker;
 import fr.polytech.ig5.mnm.userms.services.CompanyService;
 import fr.polytech.ig5.mnm.userms.utils.JwtUtils;
 import org.modelmapper.ModelMapper;
@@ -104,6 +105,38 @@ public class CompanyController {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body("Wrong password");
+    }
+
+    @PutMapping(value = "/")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> update(
+            @Valid @RequestBody CompanyUpdateDTO companyDTO,
+            @RequestHeader (name="Authorization") String bearerToken
+    ) {
+
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+        Optional<Company> optionalCompanyToUpdate = this.service.find(companyId);
+        if (optionalCompanyToUpdate.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Company not found");
+        }
+        Company company = optionalCompanyToUpdate.get();
+        company.setName(companyDTO.getName() == null ? company.getName() : companyDTO.getName());
+        company.setEmail(companyDTO.getEmail() == null ? company.getEmail() : companyDTO.getEmail());
+        //company.setPassword(companyDTO.getPassword() == null ? company.getPassword() : passwordEncoder.encode(company.getPassword()));
+        company.setDescription(companyDTO.getDescription() == null ? company.getDescription() : companyDTO.getDescription());
+        company.setSector(companyDTO.getSector() == null ? company.getSector() : companyDTO.getSector());
+        companyDTO.setEmployeesNumber(companyDTO.getEmployeesNumber() == null ? company.getEmployeesNumber() : companyDTO.getEmployeesNumber());
+        companyDTO.setPictureUrl(companyDTO.getPictureUrl() == null ? company.getPictureUrl() : companyDTO.getPictureUrl());
+
+        CompanyGetDTO updatedCompany =
+                modelMapper.map(service.update(company), CompanyGetDTO.class);
+
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedCompany);
     }
 
     @PutMapping(value = "/{id}")
