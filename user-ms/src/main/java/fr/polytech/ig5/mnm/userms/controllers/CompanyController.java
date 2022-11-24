@@ -62,7 +62,15 @@ public class CompanyController {
     public ResponseEntity<Object> create(@Valid @RequestBody CompanyCreateDTO companyCreateDTO) {
         companyCreateDTO.setPassword(passwordEncoder.encode(companyCreateDTO.getPassword()));
         Company company = modelMapper.map(companyCreateDTO, Company.class);
-        Company companyCreated = service.create(company);
+
+        CompanyAuthenticatedDTO companyCreated =
+                modelMapper.map(service.create(company), CompanyAuthenticatedDTO.class);
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("company", company.getId());
+        String token = jwtUtils.createJWT(claims, 1 * 60 * 60 * 1000);
+
+        companyCreated.setAuthorizationToken(token);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
