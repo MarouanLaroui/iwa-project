@@ -72,10 +72,10 @@ public class OfferController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody OfferUpdateDTO offerDTO) {
         // on s'assure qu'il à bien le bon id
-        offerDTO.setOfferId(id);
+        Offer offer = modelMapper.map(offerDTO, Offer.class);
+        offer.setOfferId(id);
 
-        Offer updatedOffer =
-                service.update(modelMapper.map(offerDTO, Offer.class));
+        Offer updatedOffer = service.update(offer);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

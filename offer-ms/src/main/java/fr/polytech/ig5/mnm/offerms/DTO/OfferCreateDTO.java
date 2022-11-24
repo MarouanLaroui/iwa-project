@@ -24,7 +24,6 @@ public class OfferCreateDTO {
     @NotEmpty(message = "an offer must have a location")
     private String location;
 
-    @NotNull(message = "an offer must have a creation date (YYYY-MM-DD)")
     private LocalDate creationDate = LocalDate.now();
 
     @NotNull(message = "an offer must have a starting date (YYYY-MM-DD)")
@@ -36,7 +35,7 @@ public class OfferCreateDTO {
     @NotNull(message = "an offer must have a contract type")
     private ContractType contractType;
 
-    @NotNull(message = "an offer must have a job type")
+    @NotNull(message = "an offer must have a job type : FULL_TIME or PARTIAL_TIME")
     private JobType jobType;
 
     @NotNull(message = "an offer must have a salary")

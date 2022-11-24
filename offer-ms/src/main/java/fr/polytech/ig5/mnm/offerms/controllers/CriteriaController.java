@@ -63,8 +63,6 @@ public class CriteriaController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody CriteriaUpdateDTO criteriaDTO) {
-        // on s'assure qu'il à bien le bon id
-        criteriaDTO.setCriteriaId(id);
 
         Optional<Criteria> criteria = this.service.find(id);
         if(criteria.isEmpty()){

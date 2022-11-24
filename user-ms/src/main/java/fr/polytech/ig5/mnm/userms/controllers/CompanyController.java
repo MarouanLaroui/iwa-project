@@ -124,7 +124,7 @@ public class CompanyController {
         Company company = optionalCompanyToUpdate.get();
         company.setName(companyDTO.getName() == null ? company.getName() : companyDTO.getName());
         company.setEmail(companyDTO.getEmail() == null ? company.getEmail() : companyDTO.getEmail());
-        //company.setPassword(companyDTO.getPassword() == null ? company.getPassword() : passwordEncoder.encode(company.getPassword()));
+        company.setPassword(companyDTO.getPassword() == null ? company.getPassword() : passwordEncoder.encode(company.getPassword()));
         company.setDescription(companyDTO.getDescription() == null ? company.getDescription() : companyDTO.getDescription());
         company.setSector(companyDTO.getSector() == null ? company.getSector() : companyDTO.getSector());
         companyDTO.setEmployeesNumber(companyDTO.getEmployeesNumber() == null ? company.getEmployeesNumber() : companyDTO.getEmployeesNumber());

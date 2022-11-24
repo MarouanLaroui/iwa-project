@@ -10,6 +10,8 @@ import java.util.UUID;
 @Data
 public class WorkCreateDTO {
 
+    private UUID workId;
+
     @NotNull(message = "a work must be linked to a company")
     private UUID companyId;
 
