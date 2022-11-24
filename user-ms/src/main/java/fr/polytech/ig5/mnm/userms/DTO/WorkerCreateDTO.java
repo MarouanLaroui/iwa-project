@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
@@ -22,12 +23,12 @@ public class WorkerCreateDTO {
     @NotEmpty(message = "a worker must have a password")
     private String password;
 
-    @NotEmpty(message = "a worker must have a birth date")
+    @NotNull(message = "a worker must have a birth date")
     private LocalDate birthDate;
 
     private String cvLink;
 
-    @NotEmpty(message = "a worker must specify if he has his driving license")
+    @NotNull(message = "a worker must specify if he has his driving license")
     private Boolean hasDrivingLicense;
 
 }

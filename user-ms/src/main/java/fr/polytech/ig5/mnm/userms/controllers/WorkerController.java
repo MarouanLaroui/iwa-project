@@ -78,6 +78,12 @@ public class WorkerController {
         WorkerGetDTO workerCreated =
                 modelMapper.map(service.create(worker), WorkerGetDTO.class);
 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("workerId", worker.getId());
+        String token = jwtUtils.createJWT(claims, 1 * 60 * 60 * 1000);
+
+        workerCreated.setAuthorizationToken(token);
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(workerCreated);
@@ -125,8 +131,8 @@ public class WorkerController {
                     .body("Worker not found");
         }
         Worker worker = optionalWorkerToUpdate.get();
-        worker.setFirstName(workerDTO.getFirstName() == null ? worker.getFirstName() : workerDTO.getFirstName());
-        worker.setLastName(workerDTO.getLastName() == null ? worker.getLastName() : workerDTO.getLastName());
+        worker.setFirstname(workerDTO.getFirstname() == null ? worker.getFirstname() : workerDTO.getFirstname());
+        worker.setLastname(workerDTO.getLastname() == null ? worker.getLastname() : workerDTO.getLastname());
         worker.setEmail(workerDTO.getEmail() == null ? worker.getEmail() : workerDTO.getEmail());
         worker.setPassword(workerDTO.getPassword() == null ? worker.getPassword() : passwordEncoder.encode(workerDTO.getPassword()));
         worker.setCvLink(workerDTO.getCvLink() == null ? worker.getCvLink() : workerDTO.getCvLink());
