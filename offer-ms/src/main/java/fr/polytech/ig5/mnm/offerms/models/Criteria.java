@@ -3,7 +3,6 @@ package fr.polytech.ig5.mnm.offerms.models;
 import javax.persistence.*;
 
 import lombok.Data;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -19,24 +18,24 @@ public class Criteria {
     @Column(name="worker_id", nullable = false)
     private UUID workerId;
 
-    @Column(name="contract_type")
-    private String contractType;
+    @Column(name="contract_type", nullable = false)
+    private ContractType contractType;
 
-    @Column(name="sector")
-    private String sector;
+    @Column(name="job_type", nullable = false)
+    private JobType jobType;
 
-    @Column(name="job_type")
-    private String jobType;
+    @Column(nullable = false)
+    private SectorType sector;
 
-    @Column(name="salary_expectation")
+    @Column(name="salary_expectation", nullable = false)
     private int salaryExpectation;
 
-    @Column(name="starting_date")
+    @Column(name="starting_date", nullable = false)
     private LocalDate startingDate;
 
-    @Column(name="end_date")
+    @Column(name="end_date", nullable = false)
     private LocalDate endDate;
 
-    @Column
+    @Column(nullable = false)
     private String location;
 }

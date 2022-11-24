@@ -18,11 +18,12 @@ import java.util.UUID;
 @Table(name="offers")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Offer {
+
     @Id
     @GeneratedValue()
     private UUID offerId;
 
-    @Column(name = "company_id")
+    @Column(name = "company_id", nullable = false)
     private UUID companyId;
 
     @Column(nullable = false)
@@ -31,31 +32,31 @@ public class Offer {
     @Column(nullable = false)
     private String description;
 
-    @Column(name = "creation_date")
-    private LocalDate creationDate;
-
-    @Column(name = "starting_date")
-    private LocalDate startingDate;
-
-    @Column(name = "end_date")
-    private LocalDate endDate;
-
-    @Column(nullable = false, name = "contract_type")
-    private ContractType contractType;
-
-    @Column()
-    private int salary;
-
-    @Column()
+    @Column(nullable = false)
     private String location;
 
-    @Column(name = "nb_of_hours")
-    private int nbOfHours;
+    @Column(name = "creation_date", nullable = false)
+    private LocalDate creationDate;
 
-    @Column(name = "need_driving_license")
+    @Column(name = "starting_date", nullable = false)
+    private LocalDate startingDate;
+
+    @Column(name = "end_date", nullable = false)
+    private LocalDate endDate;
+
+    @Column(name = "contract_type", nullable = false)
+    private ContractType contractType;
+
+    @Column(name = "job_type", nullable = false)
+    private JobType jobType;
+
+    @Column(nullable = false)
+    private int salary;
+
+    @Column(name = "need_driving_license", nullable = false)
     private Boolean needDrivingLicence;
 
-    @Column(name = "led_to_job")
+    @Column(name = "led_to_job", nullable = false)
     private Boolean ledToJob;
 
 }

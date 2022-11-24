@@ -8,7 +8,7 @@ import java.util.UUID;
 @Data
 public class ApplicationUpdateDTO {
 
-    private UUID applicationId;
+    // applicationId will be given as a route parameter
 
     @NotNull(message = "missing isValidatedByCompany")
     private Boolean isValidatedByCompany;
