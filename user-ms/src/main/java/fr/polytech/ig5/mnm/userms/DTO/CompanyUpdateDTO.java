@@ -14,12 +14,15 @@ public class CompanyUpdateDTO {
     @NotEmpty(message = "a company must have a name")
     private String name;
 
-    @NotEmpty(message = "a company must have an email")
     @Email
+    @NotEmpty(message = "a company must have an email")
     private String email;
 
-    @NotNull(message = "a company must have an employees number (at least 1)")
+    @NotEmpty(message = "a company must have a password")
+    private String password;
+
     @Min(1)
+    @NotNull(message = "a company must have an employees number")
     private Integer employeesNumber;
 
     @NotEmpty(message = "a company must have a description")
