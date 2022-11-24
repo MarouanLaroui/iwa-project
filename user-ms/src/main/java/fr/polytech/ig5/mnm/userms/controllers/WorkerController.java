@@ -1,13 +1,9 @@
 package fr.polytech.ig5.mnm.userms.controllers;
 
-import fr.polytech.ig5.mnm.userms.DTO.WorkerCreateDTO;
-import fr.polytech.ig5.mnm.userms.DTO.LoginDTO;
-import fr.polytech.ig5.mnm.userms.DTO.WorkerGetDTO;
-import fr.polytech.ig5.mnm.userms.DTO.WorkerUpdateDTO;
+import fr.polytech.ig5.mnm.userms.DTO.*;
 import fr.polytech.ig5.mnm.userms.models.Worker;
 import fr.polytech.ig5.mnm.userms.services.WorkerService;
 import fr.polytech.ig5.mnm.userms.utils.JwtUtils;
-import io.jsonwebtoken.Claims;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/workers")
@@ -75,8 +70,14 @@ public class WorkerController {
         workerDTO.setPassword(passwordEncoder.encode(workerDTO.getPassword()));
         Worker worker = modelMapper.map(workerDTO, Worker.class);
 
-        WorkerGetDTO workerCreated =
-                modelMapper.map(service.create(worker), WorkerGetDTO.class);
+        WorkerAuthenticatedDTO workerCreated =
+                modelMapper.map(service.create(worker), WorkerAuthenticatedDTO.class);
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("workerId", worker.getId());
+        String token = jwtUtils.createJWT(claims, 1 * 60 * 60 * 1000);
+
+        workerCreated.setAuthorizationToken(token);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -100,9 +101,12 @@ public class WorkerController {
 
         if (passwordEncoder.matches(loginDTO.getPassword(), worker.getPassword())) {
             String token = jwtUtils.createJWT(claims, 1 * 60 * 60 * 1000);
+            WorkerAuthenticatedDTO workerAuthenticated =
+                    modelMapper.map(service.create(worker), WorkerAuthenticatedDTO.class);
+            workerAuthenticated.setAuthorizationToken(token);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(token);
+                    .body(workerAuthenticated);
         }
 
         return ResponseEntity
@@ -125,8 +129,8 @@ public class WorkerController {
                     .body("Worker not found");
         }
         Worker worker = optionalWorkerToUpdate.get();
-        worker.setFirstName(workerDTO.getFirstName() == null ? worker.getFirstName() : workerDTO.getFirstName());
-        worker.setLastName(workerDTO.getLastName() == null ? worker.getLastName() : workerDTO.getLastName());
+        worker.setFirstname(workerDTO.getFirstname() == null ? worker.getFirstname() : workerDTO.getFirstname());
+        worker.setLastname(workerDTO.getLastname() == null ? worker.getLastname() : workerDTO.getLastname());
         worker.setEmail(workerDTO.getEmail() == null ? worker.getEmail() : workerDTO.getEmail());
         worker.setPassword(workerDTO.getPassword() == null ? worker.getPassword() : passwordEncoder.encode(workerDTO.getPassword()));
         worker.setCvLink(workerDTO.getCvLink() == null ? worker.getCvLink() : workerDTO.getCvLink());
