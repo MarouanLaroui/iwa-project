@@ -2,7 +2,6 @@ package fr.polytech.ig5.mnm.userms.controllers;
 
 import fr.polytech.ig5.mnm.userms.DTO.*;
 import fr.polytech.ig5.mnm.userms.models.Company;
-import fr.polytech.ig5.mnm.userms.models.Worker;
 import fr.polytech.ig5.mnm.userms.services.CompanyService;
 import fr.polytech.ig5.mnm.userms.utils.JwtUtils;
 import org.modelmapper.ModelMapper;
@@ -67,7 +66,7 @@ public class CompanyController {
                 modelMapper.map(service.create(company), CompanyAuthenticatedDTO.class);
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("company", company.getId());
+        claims.put("companyId", company.getId());
         String token = jwtUtils.createJWT(claims, 1 * 60 * 60 * 1000);
 
         companyCreated.setAuthorizationToken(token);
@@ -94,9 +93,12 @@ public class CompanyController {
 
         if (passwordEncoder.matches(loginDTO.getPassword(), company.getPassword())) {
             String token = jwtUtils.createJWT(claims, 1 * 60 * 60 * 1000);
+            CompanyAuthenticatedDTO companyAuthenticated =
+                    modelMapper.map(service.create(company), CompanyAuthenticatedDTO.class);
+            companyAuthenticated.setAuthorizationToken(token);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(token);
+                    .body(companyAuthenticated);
         }
 
         return ResponseEntity
@@ -118,9 +120,11 @@ public class CompanyController {
                 .body(updatedCompany);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deletePost(@PathVariable UUID id) {
-        Boolean isRemoved = this.service.delete(id);
+    @DeleteMapping(value = "/")
+    public ResponseEntity<Object> delete(@RequestHeader (name="Authorization") String bearerToken) {
+        System.out.println(bearerToken);
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+        Boolean isRemoved = this.service.delete(companyId);
 
         if(!isRemoved){
             return ResponseEntity
@@ -130,7 +134,7 @@ public class CompanyController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(id);
+                .body(companyId);
     }
 
 }
