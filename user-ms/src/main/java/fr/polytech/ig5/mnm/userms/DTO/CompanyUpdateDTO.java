@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class CompanyUpdateDTO {
@@ -21,13 +22,13 @@ public class CompanyUpdateDTO {
     private String password;
 
     @Min(1)
-    @NotEmpty(message = "a company must have an employees number")
+    @NotNull(message = "a company must have an employees number")
     private Integer employeesNumber;
 
     @NotEmpty(message = "a company must have a description")
     private String description;
 
-    @NotEmpty(message = "a company must have a sector")
+    @NotNull(message = "a company must have a sector")
     private SectorType sector;
 
     private String pictureUrl;
