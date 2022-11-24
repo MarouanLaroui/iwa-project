@@ -20,11 +20,11 @@ public class Worker {
     @GeneratedValue()
     private UUID id;
 
-    @Column(name="first_name", nullable = false)
-    private String firstName;
+    @Column(name="firstname", nullable = false)
+    private String firstname;
 
-    @Column(name="last_name", nullable = false)
-    private String lastName;
+    @Column(name="lastname", nullable = false)
+    private String lastname;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -41,6 +41,4 @@ public class Worker {
     @Column(name="has_driving_license", nullable = false)
     private Boolean hasDrivingLicense;
 
-    @Column(name="has_car", nullable = false)
-    private Boolean hasCar;
 }

@@ -11,9 +11,9 @@ public class WorkerGetDTO {
 
     private UUID id;
 
-    private String firstName;
+    private String firstname;
 
-    private String lastName;
+    private String lastname;
 
     @Email
     private String email;
@@ -23,6 +23,4 @@ public class WorkerGetDTO {
     private String cvLink;
 
     private Boolean hasDrivingLicense;
-
-    private Boolean hasCar;
 }

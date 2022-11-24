@@ -9,11 +9,11 @@ import java.time.LocalDate;
 @Data
 public class WorkerCreateDTO {
 
-    @NotEmpty(message = "a worker must have a first name")
-    private String firstName;
+    @NotEmpty(message = "a worker must have a firstname")
+    private String firstname;
 
-    @NotEmpty(message = "a worker must have a last name")
-    private String lastName;
+    @NotEmpty(message = "a worker must have a lastname")
+    private String lastname;
 
     @NotEmpty(message = "a worker must have an email")
     @Email
@@ -30,6 +30,4 @@ public class WorkerCreateDTO {
     @NotEmpty(message = "a worker must specify if he has his driving license")
     private Boolean hasDrivingLicense;
 
-    @NotEmpty(message = "a worker must specify if he has a car")
-    private Boolean hasCar;
 }
