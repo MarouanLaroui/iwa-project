@@ -12,9 +12,6 @@ import java.util.UUID;
 @Data
 public class OfferCreateDTO {
 
-    @NotNull(message = "an offer must have a company id")
-    private UUID companyId;
-
     @NotEmpty(message = "an offer must have a title")
     private String title;
 

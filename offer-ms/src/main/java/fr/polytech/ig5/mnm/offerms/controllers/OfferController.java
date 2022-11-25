@@ -1,5 +1,6 @@
 package fr.polytech.ig5.mnm.offerms.controllers;
 
+import fr.polytech.ig5.mnm.offerms.utils.JwtUtils;
 import fr.polytech.ig5.mnm.offerms.DTO.OfferCreateDTO;
 import fr.polytech.ig5.mnm.offerms.DTO.OfferUpdateDTO;
 import fr.polytech.ig5.mnm.offerms.models.Offer;
@@ -21,6 +22,9 @@ public class OfferController {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    JwtUtils jwtUtils;
 
     @Autowired
     OfferService service;
@@ -61,12 +65,19 @@ public class OfferController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> create(@Valid @RequestBody OfferCreateDTO offerDTO) {
-        Offer offer = this.service.create(modelMapper.map(offerDTO, Offer.class));
+    public ResponseEntity<Object> create(
+            @Valid @RequestBody OfferCreateDTO offerDTO,
+            @RequestHeader (name="Authorization") String bearerToken) {
+
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+        Offer offer = modelMapper.map(offerDTO, Offer.class);
+        offer.setCompanyId(companyId);
+
+        Offer offerCreated = this.service.create(offer);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(offer);
+                .body(offerCreated);
     }
 
     @PutMapping(value = "/{id}")
