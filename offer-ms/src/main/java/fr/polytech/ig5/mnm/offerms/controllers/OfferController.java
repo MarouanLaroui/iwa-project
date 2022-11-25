@@ -81,12 +81,35 @@ public class OfferController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody OfferUpdateDTO offerDTO) {
-        // on s'assure qu'il à bien le bon id
-        Offer offer = modelMapper.map(offerDTO, Offer.class);
-        offer.setOfferId(id);
+    public ResponseEntity<Object> update(
+            @PathVariable("id") UUID id,
+            @Valid @RequestBody OfferUpdateDTO offerDTO,
+            @RequestHeader (name="Authorization") String bearerToken) {
+        // on verifie que la company à les droits de modification
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+        Optional<Offer> optionalOffer = this.service.find(id);
 
-        Offer updatedOffer = service.update(offer);
+        if(optionalOffer.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Offer not found");
+        }
+
+        Offer offer = optionalOffer.get();
+        if(!offer.getCompanyId().equals(companyId)){
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized");
+        }
+
+        Offer newOffer = modelMapper.map(offerDTO, Offer.class);
+
+        // immutables fields
+        newOffer.setOfferId(offer.getOfferId());
+        newOffer.setCompanyId(offer.getCompanyId());
+        newOffer.setCreationDate(offer.getCreationDate());
+
+        Offer updatedOffer = service.update(newOffer);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -94,7 +117,25 @@ public class OfferController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deleteOffer(@PathVariable UUID id) {
+    public ResponseEntity<Object> deleteOffer(
+            @PathVariable UUID id,
+            @RequestHeader (name="Authorization") String bearerToken) {
+
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+        Optional<Offer> optionalOffer = this.service.find(id);
+
+        if(optionalOffer.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Offer not found");
+        }
+
+        Offer offer = optionalOffer.get();
+        if(!offer.getCompanyId().equals(companyId)){
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized");
+        }
 
         var isRemoved = this.service.delete(id);
 
