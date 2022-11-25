@@ -13,7 +13,6 @@ public class CompanyGetDTO {
 
     private String name;
 
-    @Email
     private String email;
 
     private String employeesNumber;
