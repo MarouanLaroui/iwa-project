@@ -79,14 +79,37 @@ public class ApplicationController {
     }
 
     @GetMapping("/applications/{id}")
-    public ResponseEntity<Object> get(@PathVariable("id") UUID id) {
-        Optional<Application> application = this.applicationService.find(id);
+    public ResponseEntity<Object> get(
+            @PathVariable("id") UUID id,
+            @RequestHeader (name="Authorization") String bearerToken) {
 
-        if(application.isEmpty()){
+        Optional<Application> optionalApplication = this.applicationService.find(id);
+
+        if(optionalApplication.isEmpty()){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("Application not found");
         }
+
+        Application application = optionalApplication.get();
+
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+
+        if(companyId != null) {
+            if(!application.getOffer().getCompanyId().equals(companyId)){
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized");
+            }
+        } else {
+            if(!application.getWorkerId().equals(workerId)){
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized");
+            }
+        }
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(application);

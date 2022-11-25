@@ -66,8 +66,12 @@ public class JwtUtils {
     }
 
     public UUID extractUUIDFromJWT(String uuidClaim, String bearerToken) {
-        String token = bearerToken.split(" ")[1];
-        Claims decodedToken = this.decodeJWT(token);
-        return UUID.fromString(decodedToken.get(uuidClaim, String.class));
+        try {
+            String token = bearerToken.split(" ")[1];
+            Claims decodedToken = this.decodeJWT(token);
+            return UUID.fromString(decodedToken.get(uuidClaim, String.class));
+        } catch (NullPointerException e){
+            return null;
+        }
     }
 }
