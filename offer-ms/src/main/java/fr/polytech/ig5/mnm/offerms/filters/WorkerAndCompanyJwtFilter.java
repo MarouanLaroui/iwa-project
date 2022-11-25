@@ -71,12 +71,14 @@ public class WorkerAndCompanyJwtFilter extends OncePerRequestFilter {
         AntPathRequestMatcher deleteCriteriaMatcher = new AntPathRequestMatcher("/criterias/{id}", "DELETE");
         AntPathRequestMatcher putCriteriaMatcher = new AntPathRequestMatcher("/criterias/{id}", "PUT");
         AntPathRequestMatcher getCriteriaMatcher = new AntPathRequestMatcher("/criterias/{id}", "GET");
+        AntPathRequestMatcher acceptApplicationByWorkerMatcher = new AntPathRequestMatcher("/applications/acceptByWorker/{id}", "PUT");
 
         // accessible que par les companies (c'est le filtre Companies qui s'applique)
         AntPathRequestMatcher postOfferMatcher = new AntPathRequestMatcher("/offers/", "POST");
         AntPathRequestMatcher deleteOfferMatcher = new AntPathRequestMatcher("/offers/{id}", "DELETE");
         AntPathRequestMatcher getAllCompaniesMatcher = new AntPathRequestMatcher("/offers/{id}", "PUT");
         AntPathRequestMatcher getCompanyByIdMatcher = new AntPathRequestMatcher("/applications/findByOfferId/{offerId}");
+        AntPathRequestMatcher acceptApplicationByCompanyMatcher = new AntPathRequestMatcher("/applications/acceptByCompany/{id}", "PUT");
 
         // accessible par tout le monde (public)
         AntPathRequestMatcher getByIdOfferMatcher = new AntPathRequestMatcher("/offers/{id}", "GET");
@@ -100,6 +102,8 @@ public class WorkerAndCompanyJwtFilter extends OncePerRequestFilter {
                 postOfferMatcher.matches(request) ||
                 deleteOfferMatcher.matches(request) ||
                 getAllCompaniesMatcher.matches(request) ||
-                getCompanyByIdMatcher.matches(request);
+                getCompanyByIdMatcher.matches(request) ||
+                acceptApplicationByCompanyMatcher.matches(request) ||
+                acceptApplicationByWorkerMatcher.matches(request);
     }
 }

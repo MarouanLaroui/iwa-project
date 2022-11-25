@@ -70,11 +70,10 @@ public class CompanyJwtFilter extends OncePerRequestFilter {
         AntPathRequestMatcher deleteCriteriaMatcher = new AntPathRequestMatcher("/criterias/{id}", "DELETE");
         AntPathRequestMatcher putCriteriaMatcher = new AntPathRequestMatcher("/criterias/{id}", "PUT");
         AntPathRequestMatcher getCriteriaMatcher = new AntPathRequestMatcher("/criterias/{id}", "GET");
-        // TODO: accepter candidature
+        AntPathRequestMatcher acceptApplicationByIdMatcher = new AntPathRequestMatcher("/applications/acceptByWorker/{id}", "PUT");
 
         // accessible par les deux (c'est le filtre WorkerAndCompany qui s'applique)
         AntPathRequestMatcher getApplicationByIdMatcher = new AntPathRequestMatcher("/applications/{id}", "GET");
-
 
         // accessible par tout le monde (public)
         AntPathRequestMatcher getByIdOfferMatcher = new AntPathRequestMatcher("/offers/{id}", "GET");
@@ -92,6 +91,7 @@ public class CompanyJwtFilter extends OncePerRequestFilter {
                 getAllOfferMatcher.matches(request) ||
                 getByIdOfferMatcher.matches(request) ||
                 getAllOfferByCompanyIdMatcher.matches(request) ||
-                getApplicationByIdMatcher.matches(request);
+                getApplicationByIdMatcher.matches(request) ||
+                acceptApplicationByIdMatcher.matches(request);
     }
 }

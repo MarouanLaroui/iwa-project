@@ -6,6 +6,7 @@ import fr.polytech.ig5.mnm.offerms.models.Application;
 import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.services.ApplicationService;
 import fr.polytech.ig5.mnm.offerms.services.OfferService;
+import fr.polytech.ig5.mnm.offerms.utils.JwtUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class ApplicationController {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    JwtUtils jwtUtils;
 
     @Autowired
     ApplicationService applicationService;
@@ -51,16 +55,28 @@ public class ApplicationController {
     }
 
     @GetMapping("/applications/findByOfferId/{offerId}")
-    public ResponseEntity<Object> findByOfferId(@PathVariable("offerId") UUID offerId) {
-        Optional<Offer> offer = offerService.find(offerId);
+    public ResponseEntity<Object> findByOfferId(
+            @PathVariable("offerId") UUID offerId,
+            @RequestHeader (name="Authorization") String bearerToken) {
 
-        if(offer.isEmpty()){
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+        Optional<Offer> optionalOffer = offerService.find(offerId);
+
+        if(optionalOffer.isEmpty()){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("Offer not found");
         }
 
-        List <Application> applications = this.applicationService.findByOffer(offer.get());
+        Offer offer = optionalOffer.get();
+        if(!offer.getCompanyId().equals(companyId)){
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized");
+        }
+
+        List <Application> applications = this.applicationService.findByOffer(offer);
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(applications);
@@ -81,7 +97,13 @@ public class ApplicationController {
     }
 
     @PostMapping("/offers/{offerId}/applications")
-    public ResponseEntity<Object> create(@PathVariable("offerId") UUID offerId, @Valid @RequestBody ApplicationCreateDTO applicationDTO) {
+    public ResponseEntity<Object> create(
+            @PathVariable("offerId") UUID offerId,
+            @Valid @RequestBody ApplicationCreateDTO applicationDTO,
+            @RequestHeader (name="Authorization") String bearerToken) {
+
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+
         Optional<Offer> offer = offerService.find(offerId);
 
         if(offer.isEmpty()){
@@ -90,14 +112,89 @@ public class ApplicationController {
                     .body("Offer not found");
         }
 
+        // TODO : verifier qu'il n'a pas déjà postulé à cette offre?
+
         Application application = modelMapper.map(applicationDTO, Application.class);
         application.setOffer(offer.get());
+        application.setWorkerId(workerId);
 
         Application applicationCreated = this.applicationService.create(application);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(applicationCreated);
+    }
+
+    @PutMapping(value = "/applications/acceptByWorker/{id}")
+    public ResponseEntity<Object> acceptByWorker(
+            @PathVariable("id") UUID id,
+            @RequestHeader (name="Authorization") String bearerToken) {
+
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+
+        Optional<Application> optionalApplication = this.applicationService.find(id);
+        if(optionalApplication.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Application not found");
+        }
+        Application application = optionalApplication.get();
+
+        if(!application.getWorkerId().equals(workerId)){
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized");
+        }
+
+        if(!application.getIsValidatedByCompany()){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Application not yet validated by the company");
+        }
+
+        // tout est bon
+        application.setIsValidatedByWorker(true);
+        Application updatedApplication =
+                applicationService.update(application);
+        // TODO : envoyer message kafka pour qu'un travail se créé
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedApplication);
+
+    }
+
+    @PutMapping(value = "/applications/acceptByCompany/{id}")
+    public ResponseEntity<Object> acceptByCompany(
+            @PathVariable("id") UUID id,
+            @RequestHeader (name="Authorization") String bearerToken) {
+
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+
+        Optional<Application> optionalApplication = this.applicationService.find(id);
+        if(optionalApplication.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Application not found");
+        }
+        Application application = optionalApplication.get();
+
+        UUID companyIdFromOffer = application.getOffer().getCompanyId();
+        if(!companyIdFromOffer.equals(companyId)){
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized");
+        }
+
+        // tout est bon
+        application.setIsValidatedByCompany(true);
+        Application updatedApplication =
+                applicationService.update(application);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedApplication);
+
     }
 
     @PutMapping(value = "applications/{id}")
