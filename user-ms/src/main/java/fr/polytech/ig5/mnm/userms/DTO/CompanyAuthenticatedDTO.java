@@ -13,7 +13,6 @@ public class CompanyAuthenticatedDTO {
 
     private String name;
 
-    @Email
     private String email;
 
     private String employeesNumber;
