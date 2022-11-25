@@ -67,9 +67,9 @@ public class CompanyJwtFilter extends OncePerRequestFilter {
         AntPathRequestMatcher deleteApplicationMatcher = new AntPathRequestMatcher("/applications/{id}", "DELETE");
         AntPathRequestMatcher getApplicationByWorkerMatcher = new AntPathRequestMatcher("/applications/", "GET");
         AntPathRequestMatcher postCriteriaMatcher = new AntPathRequestMatcher("/criterias/", "POST");
-        AntPathRequestMatcher deleteCriteriaMatcher = new AntPathRequestMatcher("/criterias/{id}", "DELETE");
-        AntPathRequestMatcher putCriteriaMatcher = new AntPathRequestMatcher("/criterias/{id}", "PUT");
-        AntPathRequestMatcher getCriteriaMatcher = new AntPathRequestMatcher("/criterias/{id}", "GET");
+        AntPathRequestMatcher putCriteriaMatcher = new AntPathRequestMatcher("/criterias/", "PUT");
+        AntPathRequestMatcher deleteCriteriaMatcher = new AntPathRequestMatcher("/criterias/", "DELETE");
+        AntPathRequestMatcher getCriteriaMatcher = new AntPathRequestMatcher("/criterias/", "GET");
         AntPathRequestMatcher acceptApplicationByIdMatcher = new AntPathRequestMatcher("/applications/acceptByWorker/{id}", "PUT");
 
         // accessible par les deux (c'est le filtre WorkerAndCompany qui s'applique)
@@ -85,8 +85,8 @@ public class CompanyJwtFilter extends OncePerRequestFilter {
                 deleteApplicationMatcher.matches(request) ||
                 getApplicationByWorkerMatcher.matches(request) ||
                 postCriteriaMatcher.matches(request) ||
-                deleteCriteriaMatcher.matches(request) ||
                 putCriteriaMatcher.matches(request) ||
+                deleteCriteriaMatcher.matches(request) ||
                 getCriteriaMatcher.matches(request) ||
                 getAllOfferMatcher.matches(request) ||
                 getByIdOfferMatcher.matches(request) ||

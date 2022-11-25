@@ -7,9 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface CriteriaRepository extends CrudRepository<Criteria, UUID> {
-    UUID deleteByWorkerId(UUID workerId);
+    void deleteByWorkerId(UUID workerId);
+
+    Optional<Criteria> findCriteriaByWorkerId(UUID workerId);
 }
