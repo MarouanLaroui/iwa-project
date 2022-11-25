@@ -100,21 +100,28 @@ public class ApplicationController {
 
         UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
 
-        Optional<Offer> offer = offerService.find(offerId);
+        Optional<Offer> optionalOffer = offerService.find(offerId);
 
-        if(offer.isEmpty()){
+        if(optionalOffer.isEmpty()){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("Offer not found");
         }
+        Offer offer = optionalOffer.get();
 
-        // TODO : verifier qu'il n'a pas déjà postulé à cette offre?
+        Optional<Application> optionalApplication = this.applicationService.findApplicationByWorkerIdAndOffer(workerId, offer);
 
-        Application application = modelMapper.map(applicationDTO, Application.class);
-        application.setOffer(offer.get());
-        application.setWorkerId(workerId);
+        if(!optionalApplication.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Already applied for this offer");
+        }
 
-        Application applicationCreated = this.applicationService.create(application);
+        Application applicationToCreate = modelMapper.map(applicationDTO, Application.class);
+        applicationToCreate.setOffer(offer);
+        applicationToCreate.setWorkerId(workerId);
+
+        Application applicationCreated = this.applicationService.create(applicationToCreate);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -218,7 +225,7 @@ public class ApplicationController {
     }
      */
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/applications/{id}")
     public ResponseEntity<Object> deleteOffer(
             @PathVariable UUID id,
             @RequestHeader (name="Authorization") String bearerToken) {
