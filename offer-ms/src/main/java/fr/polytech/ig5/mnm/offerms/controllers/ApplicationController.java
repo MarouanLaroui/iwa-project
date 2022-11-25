@@ -102,8 +102,6 @@ public class ApplicationController {
 
     @PutMapping(value = "applications/{id}")
     public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody ApplicationUpdateDTO applicationDTO) {
-        // on s'assure qu'il à bien le bon id
-        applicationDTO.setApplicationId(id);
 
         Optional<Application> application = this.applicationService.find(id);
         if(application.isEmpty()){
@@ -115,10 +113,6 @@ public class ApplicationController {
 
         app.setIsValidatedByCompany(applicationDTO.getIsValidatedByCompany());
         app.setIsValidatedByWorker(applicationDTO.getIsValidatedByWorker());
-
-        // copy immutable field
-        //application.setWorkerId(app.get().getWorkerId());
-        //application.setOffer(app.get().getOffer());
 
         Application updatedApplication =
                 applicationService.update(app);

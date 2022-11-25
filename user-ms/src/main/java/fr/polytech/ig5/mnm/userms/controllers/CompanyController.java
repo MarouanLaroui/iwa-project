@@ -62,7 +62,15 @@ public class CompanyController {
     public ResponseEntity<Object> create(@Valid @RequestBody CompanyCreateDTO companyCreateDTO) {
         companyCreateDTO.setPassword(passwordEncoder.encode(companyCreateDTO.getPassword()));
         Company company = modelMapper.map(companyCreateDTO, Company.class);
-        Company companyCreated = service.create(company);
+
+        CompanyAuthenticatedDTO companyCreated =
+                modelMapper.map(service.create(company), CompanyAuthenticatedDTO.class);
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("companyId", company.getId());
+        String token = jwtUtils.createJWT(claims, 1 * 60 * 60 * 1000);
+
+        companyCreated.setAuthorizationToken(token);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -86,14 +94,49 @@ public class CompanyController {
 
         if (passwordEncoder.matches(loginDTO.getPassword(), company.getPassword())) {
             String token = jwtUtils.createJWT(claims, 1 * 60 * 60 * 1000);
+            CompanyAuthenticatedDTO companyAuthenticated =
+                    modelMapper.map(service.create(company), CompanyAuthenticatedDTO.class);
+            companyAuthenticated.setAuthorizationToken(token);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(token);
+                    .body(companyAuthenticated);
         }
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body("Wrong password");
+    }
+
+    @PutMapping(value = "/")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> update(
+            @Valid @RequestBody CompanyUpdateDTO companyDTO,
+            @RequestHeader (name="Authorization") String bearerToken
+    ) {
+
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+        Optional<Company> optionalCompanyToUpdate = this.service.find(companyId);
+        if (optionalCompanyToUpdate.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Company not found");
+        }
+        Company company = optionalCompanyToUpdate.get();
+        company.setName(companyDTO.getName() == null ? company.getName() : companyDTO.getName());
+        company.setEmail(companyDTO.getEmail() == null ? company.getEmail() : companyDTO.getEmail());
+        company.setPassword(companyDTO.getPassword() == null ? company.getPassword() : passwordEncoder.encode(company.getPassword()));
+        company.setDescription(companyDTO.getDescription() == null ? company.getDescription() : companyDTO.getDescription());
+        company.setSector(companyDTO.getSector() == null ? company.getSector() : companyDTO.getSector());
+        companyDTO.setEmployeesNumber(companyDTO.getEmployeesNumber() == null ? company.getEmployeesNumber() : companyDTO.getEmployeesNumber());
+        companyDTO.setPictureUrl(companyDTO.getPictureUrl() == null ? company.getPictureUrl() : companyDTO.getPictureUrl());
+
+        CompanyGetDTO updatedCompany =
+                modelMapper.map(service.update(company), CompanyGetDTO.class);
+
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedCompany);
     }
 
     @PutMapping(value = "/{id}")
@@ -110,9 +153,11 @@ public class CompanyController {
                 .body(updatedCompany);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deletePost(@PathVariable UUID id) {
-        Boolean isRemoved = this.service.delete(id);
+    @DeleteMapping(value = "/")
+    public ResponseEntity<Object> delete(@RequestHeader (name="Authorization") String bearerToken) {
+        System.out.println(bearerToken);
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+        Boolean isRemoved = this.service.delete(companyId);
 
         if(!isRemoved){
             return ResponseEntity
@@ -122,7 +167,7 @@ public class CompanyController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(id);
+                .body(companyId);
     }
 
 }
