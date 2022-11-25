@@ -65,7 +65,7 @@ public class CompanyJwtFilter extends OncePerRequestFilter {
         // accessible que part les workers (c'est le filtre Worker qui s'applique)
         AntPathRequestMatcher postApplicationMatcher = new AntPathRequestMatcher("/offers/{offerId}/applications/", "POST");
         AntPathRequestMatcher deleteApplicationMatcher = new AntPathRequestMatcher("/applications/{id}", "DELETE");
-        AntPathRequestMatcher getApplicationByWorkerMatcher = new AntPathRequestMatcher("/applications/findByWorker/{workerId}", "GET");
+        AntPathRequestMatcher getApplicationByWorkerMatcher = new AntPathRequestMatcher("/applications/", "GET");
         AntPathRequestMatcher postCriteriaMatcher = new AntPathRequestMatcher("/criterias/", "POST");
         AntPathRequestMatcher deleteCriteriaMatcher = new AntPathRequestMatcher("/criterias/{id}", "DELETE");
         AntPathRequestMatcher putCriteriaMatcher = new AntPathRequestMatcher("/criterias/{id}", "PUT");

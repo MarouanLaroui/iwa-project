@@ -39,15 +39,11 @@ public class ApplicationController {
     }
 
     @GetMapping("/applications/")
-    public ResponseEntity<Object> index() {
-        List <Application> applications = this.applicationService.findAll();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(applications);
-    }
+    public ResponseEntity<Object> findByWorkerId(
+            @RequestHeader (name="Authorization") String bearerToken) {
 
-    @GetMapping("/applications/findByWorkerId/{workerId}")
-    public ResponseEntity<Object> findByWorkerId(@PathVariable("workerId") UUID workerId) {
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+
         List <Application> applications = this.applicationService.findByWorkerId(workerId);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -197,6 +193,8 @@ public class ApplicationController {
 
     }
 
+    /* Plus d'utilisation pour le moment
+
     @PutMapping(value = "applications/{id}")
     public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody ApplicationUpdateDTO applicationDTO) {
 
@@ -218,9 +216,28 @@ public class ApplicationController {
                 .status(HttpStatus.OK)
                 .body(updatedApplication);
     }
+     */
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deleteOffer(@PathVariable UUID id) {
+    public ResponseEntity<Object> deleteOffer(
+            @PathVariable UUID id,
+            @RequestHeader (name="Authorization") String bearerToken) {
+
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+
+        Optional<Application> optionalApplication = this.applicationService.find(id);
+        if(optionalApplication.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Application not found");
+        }
+        Application application = optionalApplication.get();
+
+        if(!application.getWorkerId().equals(workerId)){
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized");
+        }
 
         var isRemoved = this.applicationService.delete(id);
 
