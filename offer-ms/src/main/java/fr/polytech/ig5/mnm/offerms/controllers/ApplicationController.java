@@ -80,7 +80,7 @@ public class ApplicationController {
                 .body(application);
     }
 
-    @PostMapping("offers/{offerId}/applications")
+    @PostMapping("/offers/{offerId}/applications")
     public ResponseEntity<Object> create(@PathVariable("offerId") UUID offerId, @Valid @RequestBody ApplicationCreateDTO applicationDTO) {
         Optional<Offer> offer = offerService.find(offerId);
 
