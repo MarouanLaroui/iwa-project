@@ -57,6 +57,9 @@ public class ApplicationService{
         return this.repository.findApplicationsByOffer(offer);
     }
 
+    public Optional<Application> findApplicationByWorkerIdAndOffer(UUID workerId, Offer offer){
+        return this.repository.findApplicationByWorkerIdAndOffer(workerId, offer);
+    }
     @Transactional
     public Boolean deleteByWorkerId(UUID workerId){
         try{
