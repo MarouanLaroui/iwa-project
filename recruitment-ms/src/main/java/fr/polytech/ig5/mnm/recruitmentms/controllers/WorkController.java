@@ -1,16 +1,15 @@
 package fr.polytech.ig5.mnm.recruitmentms.controllers;
 
-import fr.polytech.ig5.mnm.recruitmentms.DTO.WorkCreateDTO;
 import fr.polytech.ig5.mnm.recruitmentms.DTO.WorkUpdateDTO;
 import fr.polytech.ig5.mnm.recruitmentms.models.Work;
 import fr.polytech.ig5.mnm.recruitmentms.services.WorkService;
+import fr.polytech.ig5.mnm.recruitmentms.utils.JwtUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,6 +22,9 @@ public class WorkController {
     private ModelMapper modelMapper;
 
     @Autowired
+    JwtUtils jwtUtils;
+
+    @Autowired
     WorkService service;
 
     public WorkController(WorkService service) {
@@ -31,38 +33,58 @@ public class WorkController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Object> index() {
-        List<Work> works = this.service.findAll();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(works);
-    }
+    public ResponseEntity<Object> findByCompanyId(
+            @RequestHeader (name="Authorization") String bearerToken) {
 
-    @GetMapping("/findByCompanyId/{companyId}")
-    public ResponseEntity<Object> findByCompanyId(@PathVariable(name = "companyId") UUID companyId) {
-        List<Work> works = this.service.findByCompanyId(companyId);
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(works);
-    }
+        List<Work> works;
+        if(companyId != null) {
+            works = this.service.findByCompanyId(companyId);
+        } else if (workerId != null){
+            works = this.service.findByWorkerId(workerId);
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized");
+        }
 
-    @GetMapping("/findByWorkerId/{workerId}")
-    public ResponseEntity<Object> findByWorkerId(@PathVariable(name = "workerId") UUID workerId) {
-        List<Work> works = this.service.findByWorkerId(workerId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(works);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getById(@PathVariable(name = "id") UUID id) {
-        Optional<Work> work = service.find(id);
+    public ResponseEntity<Object> getById(
+            @PathVariable(name = "id") UUID id,
+            @RequestHeader (name="Authorization") String bearerToken) {
 
-        if(work.isEmpty()){
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+
+        Optional<Work> optionalWork = service.find(id);
+
+        if (optionalWork.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("Work not found");
+        }
+
+        Work work = optionalWork.get();
+
+        if(companyId != null) {
+            if(!work.getCompanyId().equals(companyId)){
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized");
+            }
+        } else if (workerId != null){
+            if(!work.getWorkerId().equals(workerId)){
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized");
+            }
         }
 
         return ResponseEntity
@@ -70,24 +92,47 @@ public class WorkController {
                 .body(work);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Object> create(@Valid @RequestBody WorkCreateDTO workDTO) {
-        Work work = modelMapper.map(workDTO, Work.class);
-        Work workCreated = service.create(work);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(workCreated);
-    }
-
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> update(@PathVariable("id") UUID id, @RequestBody WorkUpdateDTO workDTO) {
-        // on s'assure qu'il à bien le bon id
-        workDTO.setWorkId(id);
+    public ResponseEntity<Object> update(
+            @PathVariable("id") UUID id,
+            @RequestBody WorkUpdateDTO workDTO,
+            @RequestHeader (name="Authorization") String bearerToken) {
 
-        Work updatedWork =
-                service.update(modelMapper.map(workDTO, Work.class));
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+
+        Optional<Work> optionalWork = service.find(id);
+
+        if (optionalWork.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Work not found");
+        }
+
+        Work work = optionalWork.get();
+
+        if(companyId != null) {
+            if(!work.getCompanyId().equals(companyId)){
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized");
+            }
+        } else if (workerId != null){
+            if(!work.getWorkerId().equals(workerId)){
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized");
+            }
+        }
+
+        Work newWork = modelMapper.map(workDTO, Work.class);
+        // immutable field
+        newWork.setWorkId(work.getWorkId());
+        newWork.setWorkerId(work.getWorkerId());
+        newWork.setCompanyId(work.getCompanyId());
+
+        Work updatedWork = service.update(newWork);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -96,7 +141,36 @@ public class WorkController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> delete(@PathVariable UUID id) {
+    public ResponseEntity<Object> delete(
+            @PathVariable UUID id,
+            @RequestHeader (name="Authorization") String bearerToken) {
+
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
+
+        Optional<Work> optionalWork = service.find(id);
+
+        if (optionalWork.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Work not found");
+        }
+
+        Work work = optionalWork.get();
+
+        if(companyId != null) {
+            if(!work.getCompanyId().equals(companyId)){
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized");
+            }
+        } else if (workerId != null){
+            if(!work.getWorkerId().equals(workerId)){
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized");
+            }
+        }
         Boolean isRemoved = this.service.delete(id);
 
         if(!isRemoved){
