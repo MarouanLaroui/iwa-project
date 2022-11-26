@@ -53,11 +53,14 @@ public class CriteriaService{
             System.out.println("delete criteria");
             this.repository.deleteByWorkerId(workerId);
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e){
             Logger logger = LoggerFactory.getLogger(CriteriaService.class);
             logger.warn("Failed to delete criteria associated from WORKER_DELETED TOPIC " + e.getMessage());
             return false;
         }
+    }
+
+    public Optional<Criteria> findCriteriaByWorkerId(UUID workerId){
+        return this.repository.findCriteriaByWorkerId(workerId);
     }
 }
