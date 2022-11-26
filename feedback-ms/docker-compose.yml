@@ -1,0 +1,28 @@
+services:
+  iwa-feedback-db:
+    # nom du container = hostname sur le réseau
+    container_name: iwa-feedback-db
+    image: "postgres:14.2-alpine"
+    environment:
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    volumes:
+      - iwa-feedback-db-volume:/var/lib/postgresql/data
+    ports:
+      - 5435:5432 # host:container
+
+  iwa-feedback-app:
+    container_name: iwa-feedback-app
+    build: .
+    environment:
+      spring.r2dbc.url: "r2dbc:postgresql://iwa-feedback-db:5432/${POSTGRES_DB}"
+      spring.r2dbc.username: $POSTGRES_USER
+      spring.r2dbc.password: $POSTGRES_PASSWORD
+      jwt.secret: $JWT_SECRET
+    ports:
+      - 8083:8080
+
+volumes:
+  iwa-feedback-db-volume:
+    driver: local
