@@ -60,14 +60,13 @@ public class WorkerAndCompanyJwtFilter extends OncePerRequestFilter {
         }
     }
 
+    /*
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request)
             throws ServletException {
         // accessible que part les workers (c'est le filtre Worker qui s'applique)
-        AntPathRequestMatcher findWorksByWorkerIdMatcher = new AntPathRequestMatcher("/works/findByWorkerId/{id}", "GET");
 
         // accessible que par les companies (c'est le filtre Companies qui s'applique)
-        AntPathRequestMatcher getWorksByCompanyIdMatcher = new AntPathRequestMatcher("/works/findByCompanyId/{companyId}", "GET");
 
         // accessible par tout le monde (public)
 
@@ -75,7 +74,7 @@ public class WorkerAndCompanyJwtFilter extends OncePerRequestFilter {
 
         // This filter is useless in this MS, we keep it as a reference for other MS
         // We disable it for all routes
-        return findWorksByWorkerIdMatcher.matches(request) ||
-                getWorksByCompanyIdMatcher.matches(request);
+        return false;
     }
+    */
 }

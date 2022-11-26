@@ -10,15 +10,6 @@ import java.util.UUID;
 @Data
 public class WorkUpdateDTO {
 
-    @NotNull(message = "to be updated a work must have an id")
-    private UUID workId;
-
-    @NotNull(message = "a work must be linked to a company")
-    private UUID companyId;
-
-    @NotNull(message = "a work must be linked to a worker")
-    private UUID workerId;
-
     @NotEmpty(message = "a work must have a job label")
     private String jobLabel;
 

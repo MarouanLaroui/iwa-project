@@ -63,17 +63,17 @@ public class CompanyJwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request)
             throws ServletException {
         // accessible que part les workers (c'est le filtre Worker qui s'applique)
-        AntPathRequestMatcher findWorksByWorkerIdMatcher = new AntPathRequestMatcher("/works/findByWorkerId/{id}", "GET");
 
         // accessible par les deux (c'est le filtre WorkerAndCompany qui s'applique)
         AntPathRequestMatcher getWorkByIdMatcher = new AntPathRequestMatcher("/works/{id}", "GET");
         AntPathRequestMatcher putWorkByIdMatcher = new AntPathRequestMatcher("/works/{id}", "PUT");
         AntPathRequestMatcher deleteWorkByIdMatcher = new AntPathRequestMatcher("/works/{id}", "DELETE");
+        AntPathRequestMatcher getWorksMatcher = new AntPathRequestMatcher("/works/", "GET");
 
         // accessible par tout le monde (public)
 
         String path = request.getRequestURI();
-        return findWorksByWorkerIdMatcher.matches(request) ||
+        return getWorksMatcher.matches(request) ||
                 getWorkByIdMatcher.matches(request) ||
                 putWorkByIdMatcher.matches(request) ||
                 deleteWorkByIdMatcher.matches(request);
