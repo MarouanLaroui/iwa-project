@@ -23,6 +23,7 @@ services:
       spring.datasource.password: $POSTGRES_PASSWORD
       spring.datasource.name: $POSTGRES_DB
       GATEWAY_MS_URI: iwa-gateway-app:8080
+      jwt.secret: $JWT_SECRET
       spring.kafka.bootstrap-servers: kafka1:9092
     ports:
       - 8083:8080
