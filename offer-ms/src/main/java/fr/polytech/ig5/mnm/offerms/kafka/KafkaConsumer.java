@@ -1,5 +1,6 @@
 package fr.polytech.ig5.mnm.offerms.kafka;
 
+import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.services.ApplicationService;
 import fr.polytech.ig5.mnm.offerms.services.CriteriaService;
 import fr.polytech.ig5.mnm.offerms.services.OfferService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -33,7 +35,7 @@ public class KafkaConsumer {
     }
 
     @KafkaListener(topics="COMPANY_DELETED", groupId = "1")
-    void companyDeletedListner(String companyId){
+    void companyDeletedListener(String companyId){
         this.offerService.deleteByCompanyId(UUID.fromString(companyId));
     }
 

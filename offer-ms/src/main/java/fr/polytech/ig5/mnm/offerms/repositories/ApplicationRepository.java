@@ -18,5 +18,8 @@ public interface ApplicationRepository extends CrudRepository<Application, UUID>
 
     Optional<Application> findApplicationByWorkerIdAndOffer(UUID workerId, Offer offer);
 
-    UUID deleteByWorkerId(UUID workerId);
+    void deleteByWorkerId(UUID workerId);
+
+    void deleteByOffer(Offer offer);
+
 }

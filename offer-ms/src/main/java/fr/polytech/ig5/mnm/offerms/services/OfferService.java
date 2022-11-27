@@ -1,4 +1,5 @@
 package fr.polytech.ig5.mnm.offerms.services;
+import fr.polytech.ig5.mnm.offerms.models.Application;
 import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.repositories.OfferRepository;
 import org.slf4j.Logger;
@@ -16,9 +17,14 @@ public class OfferService{
     @Autowired
     private OfferRepository repository;
 
-    public OfferService(OfferRepository repository) {
+    @Autowired
+    private ApplicationService applicationService;
+
+    public OfferService(OfferRepository repository, ApplicationService applicationService) {
         this.repository = repository;
+        this.applicationService = applicationService;
     }
+
 
     public List<Offer> findAll() {
         // TODO: find better alternative to type cast
@@ -37,9 +43,10 @@ public class OfferService{
         return this.repository.save(offer);
     }
 
-    public Boolean delete(final UUID id) {
+    public Boolean delete(Offer offer) {
         try {
-            repository.deleteById(id);
+            this.applicationService.deleteByOffer(offer);
+            this.repository.deleteById(offer.getOfferId());
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -48,9 +55,17 @@ public class OfferService{
     }
 
     @Transactional
-    public Boolean deleteByCompanyId(UUID workerId){
+    public Boolean deleteByCompanyId(UUID companyId){
         try{
-            this.repository.deleteByCompanyId(workerId);
+            List<Offer> offers = this.repository.findOffersByCompanyId(companyId);
+
+            // delete all application associated to offers that will be deleted
+            offers.forEach( offer -> {
+                this.applicationService.deleteByOffer(offer);
+            });
+
+            // delete offers
+            this.repository.deleteByCompanyId(companyId);
             return true;
         }
         catch (Exception e){
