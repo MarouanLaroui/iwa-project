@@ -291,6 +291,7 @@ public class ApplicationController {
     }
 
     private void ledToJob(Application application){
+        // create work
         HashMap<String, String> work = new HashMap<String, String>();
         work.put("companyId", application.getOffer().getCompanyId().toString());
         work.put("workerId", application.getWorkerId().toString());
@@ -303,7 +304,10 @@ public class ApplicationController {
 
         producer.sendMessage("APPLICATION_ACCEPTED", gson.toJson(work));
 
-
+        // update offer
+        Offer offer = application.getOffer();
+        offer.setLedToJob(true);
+        this.offerService.update(offer);
     }
 
 }
