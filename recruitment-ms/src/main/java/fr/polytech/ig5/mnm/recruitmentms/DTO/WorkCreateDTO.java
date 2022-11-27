@@ -31,4 +31,11 @@ public class WorkCreateDTO {
 
     private Boolean isRatedByCompany = false;
 
+    public WorkCreateDTO(UUID companyId, UUID workerId, String jobLabel, LocalDate startingDate, LocalDate endDate) {
+        this.companyId = companyId;
+        this.workerId = workerId;
+        this.jobLabel = jobLabel;
+        this.startingDate = startingDate;
+        this.endDate = endDate;
+    }
 }

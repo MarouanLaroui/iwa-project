@@ -1,15 +1,27 @@
 package fr.polytech.ig5.mnm.recruitmentms.kafka;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import fr.polytech.ig5.mnm.recruitmentms.DTO.WorkCreateDTO;
+import fr.polytech.ig5.mnm.recruitmentms.models.Work;
 import fr.polytech.ig5.mnm.recruitmentms.services.WorkService;
+import org.apache.tomcat.util.json.JSONParser;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
 public class KafkaConsumer {
     WorkService workService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     public KafkaConsumer(WorkService workService){
@@ -24,6 +36,23 @@ public class KafkaConsumer {
     @KafkaListener(topics="COMPANY_DELETED", groupId = "1")
     void companyDeletedListener(String companyId){
         this.workService.deleteByCompanyId(UUID.fromString(companyId));
+    }
+
+    @KafkaListener(topics="APPLICATION_ACCEPTED", groupId = "1")
+    void applicationAcceptedListener(String work){
+        final GsonBuilder builder = new GsonBuilder();
+        final Gson gson = builder.create();
+
+        Map map = gson.fromJson(work, Map.class);
+
+        WorkCreateDTO workDTO = new WorkCreateDTO(
+                UUID.fromString(map.get("companyId").toString()),
+                UUID.fromString(map.get("workerId").toString()),
+                map.get("jobLabel").toString(),
+                LocalDate.parse(map.get("startingDate").toString()),
+                LocalDate.parse(map.get("endDate").toString()));
+
+        this.workService.create(modelMapper.map(workDTO, Work.class));
     }
 
 }
