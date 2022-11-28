@@ -1,21 +1,20 @@
 package fr.polytech.ig5.mnm.offerms.utils;
 
 import fr.polytech.ig5.mnm.offerms.models.*;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import javax.persistence.Column;
-import java.time.LocalDate;
 import java.util.List;
 
-@Component
+@Service
 public class Recommendation {
 
-    public List<Offer> getRecommendedOffers(List<Offer> offers, Criteria criteria){
+    public static List<Offer> getRecommendedOffers(List<Offer> offers, Criteria criteria){
 
         offers.removeIf( offer -> isRecommended(offer, criteria));
 
         return offers;
     }
+
 /*
 
     private ContractType contractType;
@@ -37,7 +36,7 @@ public class Recommendation {
     x private Boolean needDrivingLicence;
 
  */
-    private Boolean isRecommended(Offer offer, Criteria criteria){
+    public static Boolean isRecommended(Offer offer, Criteria criteria){
         int points = 0;
 
         // TODO: manage compare string with title and joblabel
@@ -51,7 +50,7 @@ public class Recommendation {
             return false;
         }
 
-        if(offer.getCompanyId().equals(criteria.getContractType())){
+        if(offer.getContractType().equals(criteria.getContractType())){
             points += 2;
         }
 
@@ -70,7 +69,7 @@ public class Recommendation {
         return points >= 7; // /11 points total
     }
 
-    private boolean similarWord(String msg, String target) {
+    public static boolean similarWord(String msg, String target) {
 
         String tab[] = msg.split("\\s");
         boolean isSimilar = false;

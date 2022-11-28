@@ -1,10 +1,13 @@
 package fr.polytech.ig5.mnm.offerms.controllers;
 
+import fr.polytech.ig5.mnm.offerms.models.Criteria;
+import fr.polytech.ig5.mnm.offerms.services.CriteriaService;
 import fr.polytech.ig5.mnm.offerms.utils.JwtUtils;
 import fr.polytech.ig5.mnm.offerms.DTO.OfferCreateDTO;
 import fr.polytech.ig5.mnm.offerms.DTO.OfferUpdateDTO;
 import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.services.OfferService;
+import fr.polytech.ig5.mnm.offerms.utils.Recommendation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +32,9 @@ public class OfferController {
     @Autowired
     OfferService service;
 
+    @Autowired
+    CriteriaService criteriaService;
+
     public OfferController(OfferService service) {
         this.service = service;
     }
@@ -39,6 +45,30 @@ public class OfferController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(offers);
+    }
+
+    @GetMapping("/recommendations/")
+    public ResponseEntity<Object> getRecommendation(
+            @RequestHeader (name="Authorization") String bearerToken) {
+
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+
+        List<Offer> offers = this.service.findAll();
+        Optional<Criteria> optionalCriteria = this.criteriaService.findCriteriaByWorkerId(workerId);
+
+        if(optionalCriteria.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("To have recommendation you should have registered criterias");
+        }
+
+        Criteria criteria = optionalCriteria.get();
+
+        List<Offer> recommendedOffers = Recommendation.getRecommendedOffers(offers,criteria);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(recommendedOffers);
     }
 
     @GetMapping("/findByCompanyId/{companyId}")

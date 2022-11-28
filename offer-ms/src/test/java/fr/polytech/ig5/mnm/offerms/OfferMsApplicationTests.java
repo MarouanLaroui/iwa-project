@@ -1,13 +1,154 @@
 package fr.polytech.ig5.mnm.offerms;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import fr.polytech.ig5.mnm.offerms.models.*;
+import fr.polytech.ig5.mnm.offerms.utils.Recommendation;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDate;
 
 @SpringBootTest(classes = OfferMsApplicationTests.class)
 class OfferMsApplicationTests {
 
+	private Recommendation rec = new Recommendation();
+
 	@Test
-	void contextLoads() {
+	public void similarOfferAndCriteria() {
+		Offer offer = new Offer(
+				"Serveur",
+				"Montpellier",
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				ContractType.CDD,
+				JobType.FULL_TIME,
+				1200
+		);
+		Criteria criteria = new Criteria(
+				"Serveur",
+				ContractType.CDD,
+				JobType.FULL_TIME,
+				SectorType.ARTS,
+				1200,
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				"Montpellier"
+		);
+
+		Boolean res = rec.isRecommended(offer, criteria);
+
+		assertEquals(res, true);
 	}
 
+	@Test
+	public void notReallySimilarButShouldBeRecommended() {
+		Offer offer = new Offer(
+				"Femme de ménage",
+				"Montpellier",
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				ContractType.CDD,
+				JobType.FULL_TIME,
+				1400
+		);
+		Criteria criteria = new Criteria(
+				"Serveur",
+				ContractType.CDD,
+				JobType.FULL_TIME,
+				SectorType.ARTS,
+				1200,
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				"Montpellier"
+		);
+
+		Boolean res = rec.isRecommended(offer, criteria);
+
+		assertEquals(res, true);
+	}
+
+	@Test
+	public void differentOfferAndCriteriaShouldNotBeRecommended() {
+
+		Offer offer = new Offer(
+				"Autre",
+				"Narbonne",
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				ContractType.CDI,
+				JobType.PARTIAL_TIME,
+				1000
+		);
+		Criteria criteria = new Criteria(
+				"Serveur",
+				ContractType.CDD,
+				JobType.FULL_TIME,
+				SectorType.ARTS,
+				1200,
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				"Montpellier"
+		);
+
+		Boolean res = rec.isRecommended(offer, criteria);
+
+		assertEquals(res, false);
+	}
+
+	@Test
+	public void dateCantMatchShouldNotBeRecommended() {
+
+		Offer offer = new Offer(
+				"Autre",
+				"Narbonne",
+				LocalDate.parse("2023-07-01"),
+				LocalDate.parse("2023-08-31"),
+				ContractType.CDI,
+				JobType.PARTIAL_TIME,
+				1000
+		);
+		Criteria criteria = new Criteria(
+				"Serveur",
+				ContractType.CDD,
+				JobType.FULL_TIME,
+				SectorType.ARTS,
+				1200,
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				"Montpellier"
+		);
+
+		Boolean res = rec.isRecommended(offer, criteria);
+
+		assertEquals(res, false);
+	}
+
+	@Test
+	public void differentOfferAndCriteriaShould£NotBeRecommended() {
+
+		Offer offer = new Offer(
+				"Autre",
+				"Montpellier",
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				ContractType.CDI,
+				JobType.PARTIAL_TIME,
+				1000
+		);
+		Criteria criteria = new Criteria(
+				"Serveur",
+				ContractType.CDD,
+				JobType.FULL_TIME,
+				SectorType.ARTS,
+				1200,
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				"Montpellier"
+		);
+
+		Boolean res = rec.isRecommended(offer, criteria);
+
+		assertEquals(res, false);
+	}
 }
