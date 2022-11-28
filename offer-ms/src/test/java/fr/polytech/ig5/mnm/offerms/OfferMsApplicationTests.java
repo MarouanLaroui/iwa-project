@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest(classes = OfferMsApplicationTests.class)
 class OfferMsApplicationTests {
-
-	private Recommendation rec = new Recommendation();
 
 	@Test
 	public void similarOfferAndCriteria() {
@@ -36,7 +36,7 @@ class OfferMsApplicationTests {
 				"Montpellier"
 		);
 
-		Boolean res = rec.isRecommended(offer, criteria);
+		Boolean res = Recommendation.isRecommended(offer, criteria);
 
 		assertEquals(res, true);
 	}
@@ -63,7 +63,7 @@ class OfferMsApplicationTests {
 				"Montpellier"
 		);
 
-		Boolean res = rec.isRecommended(offer, criteria);
+		Boolean res = Recommendation.isRecommended(offer, criteria);
 
 		assertEquals(res, true);
 	}
@@ -91,7 +91,7 @@ class OfferMsApplicationTests {
 				"Montpellier"
 		);
 
-		Boolean res = rec.isRecommended(offer, criteria);
+		Boolean res = Recommendation.isRecommended(offer, criteria);
 
 		assertEquals(res, false);
 	}
@@ -119,7 +119,7 @@ class OfferMsApplicationTests {
 				"Montpellier"
 		);
 
-		Boolean res = rec.isRecommended(offer, criteria);
+		Boolean res = Recommendation.isRecommended(offer, criteria);
 
 		assertEquals(res, false);
 	}
@@ -136,6 +136,7 @@ class OfferMsApplicationTests {
 				JobType.PARTIAL_TIME,
 				1000
 		);
+
 		Criteria criteria = new Criteria(
 				"Serveur",
 				ContractType.CDD,
@@ -147,8 +148,61 @@ class OfferMsApplicationTests {
 				"Montpellier"
 		);
 
-		Boolean res = rec.isRecommended(offer, criteria);
+		Boolean res = Recommendation.isRecommended(offer, criteria);
 
 		assertEquals(res, false);
 	}
+
+	@Test
+	public void getRecommendations() {
+
+		Offer offer = new Offer(
+				"Autre",
+				"Montpellier",
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				ContractType.CDI,
+				JobType.PARTIAL_TIME,
+				1000
+		);
+		Offer offer1 = new Offer(
+				"Serveur",
+				"Montpellier",
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				ContractType.CDD,
+				JobType.FULL_TIME,
+				1200
+		);
+		Offer offer2 = new Offer(
+				"Femme de ménage",
+				"Montpellier",
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				ContractType.CDD,
+				JobType.FULL_TIME,
+				1400
+		);
+
+		List<Offer> offers = new ArrayList<>();
+		offers.add(offer);
+		offers.add(offer1);
+		offers.add(offer2);
+
+		Criteria criteria = new Criteria(
+				"Serveur",
+				ContractType.CDD,
+				JobType.FULL_TIME,
+				SectorType.ARTS,
+				1200,
+				LocalDate.parse("2023-05-01"),
+				LocalDate.parse("2023-08-31"),
+				"Montpellier"
+		);
+
+		List<Offer> recommendedOffers = Recommendation.getRecommendedOffers(offers,criteria);
+
+		assertEquals(recommendedOffers.size(), 2);
+	}
+
 }

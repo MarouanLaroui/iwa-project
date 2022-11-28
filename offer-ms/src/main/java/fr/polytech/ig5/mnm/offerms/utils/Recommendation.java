@@ -10,7 +10,7 @@ public class Recommendation {
 
     public static List<Offer> getRecommendedOffers(List<Offer> offers, Criteria criteria){
 
-        offers.removeIf( offer -> isRecommended(offer, criteria));
+        offers.removeIf( offer -> !isRecommended(offer, criteria));
 
         return offers;
     }
