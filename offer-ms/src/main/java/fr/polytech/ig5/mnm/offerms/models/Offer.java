@@ -68,4 +68,6 @@ public class Offer {
         this.jobType = jobType;
         this.salary = salary;
     }
+
+    public Offer(){}
 }

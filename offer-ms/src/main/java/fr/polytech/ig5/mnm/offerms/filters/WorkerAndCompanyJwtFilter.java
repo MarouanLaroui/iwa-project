@@ -65,6 +65,7 @@ public class WorkerAndCompanyJwtFilter extends OncePerRequestFilter {
             throws ServletException {
         // accessible que part les workers (c'est le filtre Worker qui s'applique)
         AntPathRequestMatcher postApplicationMatcher = new AntPathRequestMatcher("/offers/{offerId}/applications/", "POST");
+        AntPathRequestMatcher getRecommendationsMatcher = new AntPathRequestMatcher("/offers/recommendations/", "GET");
         AntPathRequestMatcher deleteApplicationMatcher = new AntPathRequestMatcher("/applications/{id}", "DELETE");
         AntPathRequestMatcher getApplicationByWorkerMatcher = new AntPathRequestMatcher("/applications/", "GET");
         AntPathRequestMatcher postCriteriaMatcher = new AntPathRequestMatcher("/criterias/", "POST");
@@ -91,6 +92,7 @@ public class WorkerAndCompanyJwtFilter extends OncePerRequestFilter {
         // This filter is useless in this MS, we keep it as a reference for other MS
         // We disable it for all routes
         return postApplicationMatcher.matches(request) ||
+                getRecommendationsMatcher.matches(request) ||
                 deleteApplicationMatcher.matches(request) ||
                 getApplicationByWorkerMatcher.matches(request) ||
                 postCriteriaMatcher.matches(request) ||

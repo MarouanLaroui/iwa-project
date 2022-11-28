@@ -52,4 +52,6 @@ public class Criteria {
         this.endDate = endDate;
         this.location = location;
     }
+
+    public Criteria(){}
 }
