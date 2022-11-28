@@ -18,6 +18,9 @@ public class Criteria {
     @Column(name="worker_id", nullable = false)
     private UUID workerId;
 
+    @Column(name="job_label", nullable = false)
+    private String jobLabel;
+
     @Column(name="contract_type", nullable = false)
     private ContractType contractType;
 

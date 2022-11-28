@@ -1,6 +1,7 @@
 package fr.polytech.ig5.mnm.offerms.DTO;
 
 
+import fr.polytech.ig5.mnm.offerms.models.ContractType;
 import fr.polytech.ig5.mnm.offerms.models.JobType;
 import fr.polytech.ig5.mnm.offerms.models.SectorType;
 import lombok.Data;
@@ -14,8 +15,11 @@ public class CriteriaCreateDTO {
 
     // workerId will come from JWT
 
-    @NotEmpty(message = "a criteria must have a contract type")
-    private String contractType;
+    @NotEmpty(message = "a criteria must have a job label")
+    private String jobLabel;
+
+    @NotNull(message = "a criteria must have a contract type")
+    private ContractType contractType;
 
     @NotNull(message = "a criteria must have a job type")
     private JobType jobType;
