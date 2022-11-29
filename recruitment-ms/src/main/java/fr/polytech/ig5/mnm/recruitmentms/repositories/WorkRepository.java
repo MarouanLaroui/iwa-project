@@ -9,9 +9,9 @@ import java.util.UUID;
 
 @Repository
 public interface WorkRepository extends CrudRepository<Work, UUID> {
-    void deleteByCompanyId(UUID companyId);
+    void deleteWorksByCompanyId(UUID companyId);
 
-    void deleteByWorkerId(UUID workerId);
+    void deleteWorksByWorkerId(UUID workerId);
 
     List<Work> findWorksByCompanyId(UUID companyId);
 

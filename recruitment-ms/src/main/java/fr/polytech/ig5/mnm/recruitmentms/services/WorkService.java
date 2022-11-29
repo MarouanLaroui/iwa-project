@@ -51,7 +51,7 @@ public class WorkService {
     @Transactional
     public Boolean deleteByWorkerId(UUID workerId){
         try{
-            this.repository.deleteByWorkerId(workerId);
+            this.repository.deleteWorksByWorkerId(workerId);
             return true;
         }
         catch (Exception e){
@@ -62,7 +62,7 @@ public class WorkService {
     @Transactional
     public Boolean deleteByCompanyId(UUID companyId){
         try{
-            this.repository.deleteByCompanyId(companyId);
+            this.repository.deleteWorksByCompanyId(companyId);
             return true;
         }
         catch (Exception e){

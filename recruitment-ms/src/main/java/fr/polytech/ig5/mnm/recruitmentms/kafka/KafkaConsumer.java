@@ -28,17 +28,17 @@ public class KafkaConsumer {
         this.workService = workService;
     }
 
-    @KafkaListener(topics="WORKER_DELETED", groupId = "1")
+    @KafkaListener(topics="WORKER_DELETED", groupId = "2")
     void workerDeletedListener(String workerId){
         this.workService.deleteByWorkerId(UUID.fromString(workerId));
     }
 
-    @KafkaListener(topics="COMPANY_DELETED", groupId = "1")
+    @KafkaListener(topics="COMPANY_DELETED", groupId = "2")
     void companyDeletedListener(String companyId){
         this.workService.deleteByCompanyId(UUID.fromString(companyId));
     }
 
-    @KafkaListener(topics="APPLICATION_ACCEPTED", groupId = "1")
+    @KafkaListener(topics="APPLICATION_ACCEPTED", groupId = "2")
     void applicationAcceptedListener(String work){
         final GsonBuilder builder = new GsonBuilder();
         final Gson gson = builder.create();
