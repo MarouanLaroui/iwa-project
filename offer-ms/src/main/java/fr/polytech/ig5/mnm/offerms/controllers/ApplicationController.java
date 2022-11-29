@@ -1,7 +1,9 @@
 package fr.polytech.ig5.mnm.offerms.controllers;
 
+import com.google.gson.*;
 import fr.polytech.ig5.mnm.offerms.DTO.ApplicationCreateDTO;
 import fr.polytech.ig5.mnm.offerms.DTO.ApplicationUpdateDTO;
+import fr.polytech.ig5.mnm.offerms.kafka.KafkaProducer;
 import fr.polytech.ig5.mnm.offerms.models.Application;
 import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.services.ApplicationService;
@@ -14,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,8 +38,11 @@ public class ApplicationController {
     @Autowired
     OfferService offerService;
 
-    public ApplicationController(ApplicationService service) {
+    private KafkaProducer producer;
+
+    public ApplicationController(ApplicationService service, KafkaProducer producer) {
         this.applicationService = service;
+        this.producer = producer;
     }
 
     @GetMapping("/applications/")
@@ -182,7 +189,8 @@ public class ApplicationController {
         application.setIsValidatedByWorker(true);
         Application updatedApplication =
                 applicationService.update(application);
-        // TODO : envoyer message kafka pour qu'un travail se créé
+
+        ledToJob(application);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -282,5 +290,24 @@ public class ApplicationController {
                 .body(id);
     }
 
+    private void ledToJob(Application application){
+        // create work
+        HashMap<String, String> work = new HashMap<String, String>();
+        work.put("companyId", application.getOffer().getCompanyId().toString());
+        work.put("workerId", application.getWorkerId().toString());
+        work.put("jobLabel", application.getOffer().getTitle());
+        work.put("startingDate", application.getOffer().getStartingDate().toString());
+        work.put("endDate", application.getOffer().getEndDate().toString());
+
+        final GsonBuilder builder = new GsonBuilder();
+        final Gson gson = builder.create();
+
+        producer.sendMessage("APPLICATION_ACCEPTED", gson.toJson(work));
+
+        // update offer
+        Offer offer = application.getOffer();
+        offer.setLedToJob(true);
+        this.offerService.update(offer);
+    }
 
 }

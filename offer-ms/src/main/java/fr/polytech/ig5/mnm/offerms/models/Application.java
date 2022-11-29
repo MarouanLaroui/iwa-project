@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 @Data
@@ -35,9 +36,5 @@ public class Application {
 
     @Column(name="is_validated_by_worker", nullable = false)
     private Boolean isValidatedByWorker;
-
-
-    // add :  @OnDelete(action = OnDeleteAction.CASCADE) ?
-    // add : @JsonIgnore ?
 
 }

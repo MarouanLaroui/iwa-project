@@ -12,4 +12,9 @@ public class Topics {
         return TopicBuilder.name("OFFER_DELETED").build();
     }
 
+    @Bean
+    public NewTopic applicationAcceptedTopic(){
+        return TopicBuilder.name("APPLICATION_ACCEPTED").build();
+    }
+
 }
