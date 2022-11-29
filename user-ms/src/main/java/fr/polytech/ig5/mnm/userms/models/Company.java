@@ -26,7 +26,7 @@ public class Company {
     @Column(name="employees_number", nullable = false)
     private Integer employeesNumber;
 
-    @Column(nullable = false)
+    @Column(columnDefinition="TEXT", nullable = false)
     private String description;
 
     @Column(nullable = false)
