@@ -18,6 +18,9 @@ public class Criteria {
     @Column(name="worker_id", nullable = false)
     private UUID workerId;
 
+    @Column(name="job_label", nullable = false)
+    private String jobLabel;
+
     @Column(name="contract_type", nullable = false)
     private ContractType contractType;
 
@@ -38,4 +41,17 @@ public class Criteria {
 
     @Column(nullable = false)
     private String location;
+
+    public Criteria(String jobLabel, ContractType contractType, JobType jobType, SectorType sector, int salaryExpectation, LocalDate startingDate, LocalDate endDate, String location) {
+        this.jobLabel = jobLabel;
+        this.contractType = contractType;
+        this.jobType = jobType;
+        this.sector = sector;
+        this.salaryExpectation = salaryExpectation;
+        this.startingDate = startingDate;
+        this.endDate = endDate;
+        this.location = location;
+    }
+
+    public Criteria(){}
 }

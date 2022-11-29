@@ -59,4 +59,15 @@ public class Offer {
     @Column(name = "led_to_job", nullable = false)
     private Boolean ledToJob;
 
+    public Offer(String title, String location, LocalDate startingDate, LocalDate endDate, ContractType contractType, JobType jobType, int salary) {
+        this.title = title;
+        this.location = location;
+        this.startingDate = startingDate;
+        this.endDate = endDate;
+        this.contractType = contractType;
+        this.jobType = jobType;
+        this.salary = salary;
+    }
+
+    public Offer(){}
 }
