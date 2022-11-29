@@ -12,5 +12,5 @@ public interface OfferRepository extends CrudRepository<Offer, UUID> {
 
     List<Offer> findOffersByCompanyId(UUID companyId);
 
-    UUID deleteByCompanyId(UUID companyId);
+    void deleteByCompanyId(UUID companyId);
 }

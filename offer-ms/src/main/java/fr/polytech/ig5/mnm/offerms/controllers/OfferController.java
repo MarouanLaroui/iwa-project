@@ -137,7 +137,7 @@ public class OfferController {
                     .body("Unauthorized");
         }
 
-        var isRemoved = this.service.delete(id);
+        var isRemoved = this.service.delete(offer);
 
         if (!isRemoved) {
             return ResponseEntity

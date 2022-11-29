@@ -2,6 +2,7 @@ package fr.polytech.ig5.mnm.offerms.services;
 import fr.polytech.ig5.mnm.offerms.models.Application;
 import fr.polytech.ig5.mnm.offerms.models.Offer;
 import fr.polytech.ig5.mnm.offerms.repositories.ApplicationRepository;
+import fr.polytech.ig5.mnm.offerms.repositories.OfferRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,20 @@ public class ApplicationService{
     public Optional<Application> findApplicationByWorkerIdAndOffer(UUID workerId, Offer offer){
         return this.repository.findApplicationByWorkerIdAndOffer(workerId, offer);
     }
+
+    @Transactional
+    public Boolean deleteByOffer(Offer offer){
+        try{
+            this.repository.deleteByOffer(offer);
+            return true;
+        }
+        catch (Exception e){
+            Logger logger = LoggerFactory.getLogger(ApplicationService.class);
+            logger.warn("Failed to delete offer associated from OFFER_DELETED TOPIC " + e.getMessage());
+            return false;
+        }
+    }
+
     @Transactional
     public Boolean deleteByWorkerId(UUID workerId){
         try{

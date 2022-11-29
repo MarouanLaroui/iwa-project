@@ -22,7 +22,7 @@ public class KafkaConsumer {
     }
 
     @KafkaListener(topics="COMPANY_DELETED", groupId = "1")
-    void companyDeletedListner(String companyId){
+    void companyDeletedListener(String companyId){
         this.workService.deleteByCompanyId(UUID.fromString(companyId));
     }
 
