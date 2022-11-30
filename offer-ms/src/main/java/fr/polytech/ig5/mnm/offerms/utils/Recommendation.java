@@ -39,7 +39,6 @@ public class Recommendation {
     public static Boolean isRecommended(Offer offer, Criteria criteria){
         int points = 0;
 
-        // TODO: manage compare string with title and joblabel
         if(similarWord(offer.getTitle(), criteria.getJobLabel())){
             points += 4;
         }
