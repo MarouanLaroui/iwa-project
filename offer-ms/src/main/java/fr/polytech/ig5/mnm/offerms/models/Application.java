@@ -28,7 +28,7 @@ public class Application {
     @JoinColumn(name = "offer_id", nullable = false)
     private Offer offer;
 
-    @Column(name="message", nullable = false)
+    @Column(columnDefinition="TEXT", nullable = false)
     private String message;
 
     @Column(name="is_validated_by_company", nullable = false)
