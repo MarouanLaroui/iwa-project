@@ -31,8 +31,11 @@ public class FeedbackController {
 
     private KafkaProducer producer;
 
-    public FeedbackController(FeedbackService service) {
+    public FeedbackController(
+            FeedbackService service,
+            KafkaProducer producer) {
         this.service = service;
+        this.producer = producer;
     }
 
     @GetMapping("/stats/{id}")
@@ -80,7 +83,7 @@ public class FeedbackController {
 
     @PostMapping("/{id}")
     public ResponseEntity<Object> create(
-            @PathVariable UUID jobId,
+            @PathVariable("id") UUID jobId,
             @Valid @RequestBody FeedbackCreateDTO feedbackDTO,
             @RequestHeader (name="Authorization") String bearerToken) {
 
