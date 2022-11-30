@@ -2,15 +2,18 @@ package fr.polytech.ig5.mnm.feedbackms.controllers;
 
 import fr.polytech.ig5.mnm.feedbackms.DTO.FeedbackCreateDTO;
 import fr.polytech.ig5.mnm.feedbackms.models.Feedback;
+import fr.polytech.ig5.mnm.feedbackms.models.Worker;
 import fr.polytech.ig5.mnm.feedbackms.services.FeedbackService;
+import fr.polytech.ig5.mnm.feedbackms.utils.JwtUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -22,6 +25,11 @@ public class FeedbackController {
 
     @Autowired
     FeedbackService service;
+
+    @Autowired
+    JwtUtils jwtUtils;
+
+    RestTemplate restTemplate = new RestTemplate();
 
     public FeedbackController(FeedbackService service) {
         this.service = service;
@@ -49,10 +57,33 @@ public class FeedbackController {
 
     @PostMapping("/")
     public ResponseEntity<Object> create(
-            @Valid @RequestBody FeedbackCreateDTO feedbackDTO) {
+            @Valid @RequestBody FeedbackCreateDTO feedbackDTO,
+            @RequestHeader (name="Authorization") String bearerToken) {
+
+        UUID workerId = jwtUtils.extractUUIDFromJWT("workerId", bearerToken);
+        UUID companyId = jwtUtils.extractUUIDFromJWT("companyId", bearerToken);
 
         Feedback newFeedback = modelMapper.map(feedbackDTO, Feedback.class);
-        //newFeedback.setSenderId();
+
+        if(workerId != null){
+            newFeedback.setSenderId(workerId);
+        } else if(companyId != null){
+            newFeedback.setSenderId(companyId);
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized");
+        }
+
+        Optional<Feedback> feedback = this.service.findFeedbackBySenderIdAndReceiverId(
+                newFeedback.getSenderId(), newFeedback.getReceiverId()
+        );
+
+        if(!feedback.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("You can't send two feedbacks to the same person");
+        }
 
         Feedback createdFeedback = this.service.create(newFeedback);
 

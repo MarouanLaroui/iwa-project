@@ -10,7 +10,6 @@ public class FeedbackCreateDTO {
 
     private UUID feedbackId;
 
-    @NotNull(message = "a feedback must have a sender id")
     private UUID senderId;
 
     @NotNull(message = "a feedback must have a receiver id")

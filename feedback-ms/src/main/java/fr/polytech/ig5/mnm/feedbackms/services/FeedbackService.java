@@ -23,12 +23,14 @@ public class FeedbackService {
     }
 
     public List<Feedback> findBySenderId(final UUID id) {
-        return repository.findFeedbacksByReceiverId(id);
+        return repository.findFeedbacksBySenderId(id);
     }
 
     public Optional<Feedback> find(final UUID id) {
         return repository.findById(id);
     }
+
+    public Optional<Feedback> findFeedbackBySenderIdAndReceiverId(final UUID senderId, final UUID receiverId){ return repository.findFeedbackBySenderIdAndReceiverId(senderId, receiverId); }
 
     public Feedback create(Feedback criteria) {
         return this.repository.save(criteria);

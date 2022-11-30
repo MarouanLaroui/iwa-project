@@ -64,8 +64,8 @@ public class WorkerJwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request)
             throws ServletException {
         AntPathRequestMatcher postFeedBackMatcher = new AntPathRequestMatcher("/feedbacks/", "POST");
-        AntPathRequestMatcher getFeedbacksBySenderMatcher = new AntPathRequestMatcher("/feedbacks/findBySender/", "GET");
-        AntPathRequestMatcher getFeedbacksByReceiverMatcher = new AntPathRequestMatcher("/feedbacks/findByReceiver/", "GET");
+        AntPathRequestMatcher getFeedbacksBySenderMatcher = new AntPathRequestMatcher("/feedbacks/bySenderId/", "GET");
+        AntPathRequestMatcher getFeedbacksByReceiverMatcher = new AntPathRequestMatcher("/feedbacks/byReceiverId/", "GET");
         AntPathRequestMatcher deleteFeedbackMatcher = new AntPathRequestMatcher("/feedbacks/", "DELETE");
 
         String path = request.getRequestURI();

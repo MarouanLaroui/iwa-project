@@ -64,8 +64,8 @@ public class CompanyJwtFilter extends OncePerRequestFilter {
             throws ServletException {
         // accessible par les deux (c'est le filtre WorkerAndCompany qui s'applique)
         AntPathRequestMatcher postFeedBackMatcher = new AntPathRequestMatcher("/feedbacks/", "POST");
-        AntPathRequestMatcher getFeedbacksBySenderMatcher = new AntPathRequestMatcher("/feedbacks/findBySenderId/", "GET");
-        AntPathRequestMatcher getFeedbacksByReceiverMatcher = new AntPathRequestMatcher("/feedbacks/findByReceiverId/", "GET");
+        AntPathRequestMatcher getFeedbacksBySenderMatcher = new AntPathRequestMatcher("/feedbacks/bySenderId/{id}", "GET");
+        AntPathRequestMatcher getFeedbacksByReceiverMatcher = new AntPathRequestMatcher("/feedbacks/byReceiverId/{id}Ò", "GET");
         AntPathRequestMatcher deleteFeedbackMatcher = new AntPathRequestMatcher("/feedbacks/", "DELETE");
 
         String path = request.getRequestURI();
