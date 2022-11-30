@@ -10,6 +10,7 @@ services:
       USER_MS_URI: http://iwa-user-app:8080
       OFFER_MS_URI: http://iwa-offer-app:8080
       RECRUITMENT_MS_URI: http://iwa-recruitment-app:8080
+      FEEDBACK_MS_URI: http://iwa-feedback-app:8080
       FRONTEND_URI: $FRONTEND_URI
 networks:
   gateway:
