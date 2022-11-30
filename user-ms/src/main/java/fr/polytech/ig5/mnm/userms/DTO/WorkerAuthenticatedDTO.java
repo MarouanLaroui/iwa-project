@@ -25,4 +25,7 @@ public class WorkerAuthenticatedDTO {
     private Boolean hasDrivingLicense;
 
     private String authorizationToken;
+
+    private String pictureUrl;
+
 }

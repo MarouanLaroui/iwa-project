@@ -136,6 +136,7 @@ public class WorkerController {
         worker.setCvLink(workerDTO.getCvLink() == null ? worker.getCvLink() : workerDTO.getCvLink());
         worker.setBirthDate(workerDTO.getBirthDate() == null ? worker.getBirthDate() : workerDTO.getBirthDate());
         worker.setHasDrivingLicense(workerDTO.getHasDrivingLicense() == null ? worker.getHasDrivingLicense() : workerDTO.getHasDrivingLicense());
+        worker.setPictureUrl(workerDTO.getPictureUrl() == null ? worker.getPictureUrl() : workerDTO.getPictureUrl());
 
         WorkerGetDTO updatedWorker =
                 modelMapper.map(service.update(worker), WorkerGetDTO.class);

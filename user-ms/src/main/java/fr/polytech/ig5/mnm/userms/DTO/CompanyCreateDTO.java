@@ -28,6 +28,10 @@ public class CompanyCreateDTO {
     @NotEmpty(message = "a company must have a description")
     private String description;
 
+    @NotEmpty(message = "a company must have a slogan")
+    private String slogan;
+
+
     @NotNull(message = "a company must have a sector")
     private SectorType sector;
 

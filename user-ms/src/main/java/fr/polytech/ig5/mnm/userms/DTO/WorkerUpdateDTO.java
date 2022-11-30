@@ -23,4 +23,6 @@ public class WorkerUpdateDTO {
 
     private Boolean hasDrivingLicense;
 
+    private String pictureUrl;
+
 }

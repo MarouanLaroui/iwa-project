@@ -30,6 +30,9 @@ public class Company {
     private String description;
 
     @Column(nullable = false)
+    private String slogan;
+
+    @Column(nullable = false)
     private SectorType sector;
 
     @Column(name="picture_url")
