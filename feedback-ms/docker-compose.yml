@@ -1,0 +1,46 @@
+services:
+  iwa-feedback-db:
+    # nom du container = hostname sur le réseau
+    container_name: iwa-feedback-db
+    image: "postgres:14.2-alpine"
+    environment:
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    volumes:
+      - iwa-feedback-db-volume:/var/lib/postgresql/data
+    ports:
+      - 5435:5432 # host:container
+    networks:
+      - iwa-feedback-network
+
+  iwa-feedback-app:
+    container_name: iwa-feedback-app
+    build: .
+    environment:
+      spring.datasource.url: "jdbc:postgresql://iwa-feedback-db:5432/${POSTGRES_DB}"
+      spring.datasource.username: $POSTGRES_USER
+      spring.datasource.password: $POSTGRES_PASSWORD
+      spring.datasource.name: $POSTGRES_DB
+      jwt.secret: $JWT_SECRET
+      spring.kafka.bootstrap-servers: kafka1:9092
+      GATEWAY_MS_URI: iwa-gateway-app:8080
+    depends_on:
+      - iwa-feedback-db
+    ports:
+      - 8084:8080
+    networks:
+      - iwa-feedback-network
+      - kafka_iwa-kafka-network
+      - gateway
+
+volumes:
+  iwa-feedback-db-volume:
+    driver: local
+
+networks:
+  iwa-feedback-network:
+  kafka_iwa-kafka-network:
+    external: true
+  gateway:
+    external: true
