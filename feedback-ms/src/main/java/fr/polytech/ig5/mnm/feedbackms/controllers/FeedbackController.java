@@ -2,6 +2,7 @@ package fr.polytech.ig5.mnm.feedbackms.controllers;
 
 import fr.polytech.ig5.mnm.feedbackms.DTO.FeedbackCreateDTO;
 import fr.polytech.ig5.mnm.feedbackms.models.Feedback;
+import fr.polytech.ig5.mnm.feedbackms.models.Stats;
 import fr.polytech.ig5.mnm.feedbackms.services.FeedbackService;
 import fr.polytech.ig5.mnm.feedbackms.utils.JwtUtils;
 import org.modelmapper.ModelMapper;
@@ -28,10 +29,31 @@ public class FeedbackController {
     @Autowired
     JwtUtils jwtUtils;
 
-    RestTemplate restTemplate = new RestTemplate();
-
     public FeedbackController(FeedbackService service) {
         this.service = service;
+    }
+
+    @GetMapping("/stats/{id}")
+    public ResponseEntity<Object> getStat(@PathVariable("id") UUID receiverId) {
+
+        List<Feedback> feedbacks = this.service.findByReceiverId(receiverId);
+
+        double average;
+        if(feedbacks.size() > 0) {
+            int total = 0;
+            for (Feedback f : feedbacks) {
+                total += f.getRate();
+            }
+            average = total / feedbacks.size();
+        } else {
+            average = 0;
+        }
+
+        Stats stats = new Stats(average, feedbacks.size());
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(stats);
     }
 
     @GetMapping("/bySenderId/{id}")
