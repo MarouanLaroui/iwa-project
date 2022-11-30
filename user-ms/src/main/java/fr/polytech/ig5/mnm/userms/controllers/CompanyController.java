@@ -127,8 +127,8 @@ public class CompanyController {
         company.setPassword(companyDTO.getPassword() == null ? company.getPassword() : passwordEncoder.encode(company.getPassword()));
         company.setDescription(companyDTO.getDescription() == null ? company.getDescription() : companyDTO.getDescription());
         company.setSector(companyDTO.getSector() == null ? company.getSector() : companyDTO.getSector());
-        companyDTO.setEmployeesNumber(companyDTO.getEmployeesNumber() == null ? company.getEmployeesNumber() : companyDTO.getEmployeesNumber());
-        companyDTO.setPictureUrl(companyDTO.getPictureUrl() == null ? company.getPictureUrl() : companyDTO.getPictureUrl());
+        company.setEmployeesNumber(companyDTO.getEmployeesNumber() == null ? company.getEmployeesNumber() : companyDTO.getEmployeesNumber());
+        company.setPictureUrl(companyDTO.getPictureUrl() == null ? company.getPictureUrl() : companyDTO.getPictureUrl());
 
         CompanyGetDTO updatedCompany =
                 modelMapper.map(service.update(company), CompanyGetDTO.class);
