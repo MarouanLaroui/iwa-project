@@ -24,6 +24,7 @@ public class GatewayMsApplication {
 		String userMsURI  = env.getProperty("USER_MS_URI");
 		String offerMsURI  = env.getProperty("OFFER_MS_URI");
 		String recruitmentMsURI  = env.getProperty("RECRUITMENT_MS_URI");
+		String feedbackMsURI  = env.getProperty("FEEDBACK_MS_URI");
 
 		return builder.routes()
 				.route("r11", r -> r.path("/workers/**")
@@ -47,6 +48,11 @@ public class GatewayMsApplication {
 				.route("r31", r -> r.path("/works/**")
 						.and()
 						.uri(recruitmentMsURI))
+
+				.route("r41", r -> r.path("/feedbacks/**")
+						.and()
+						.uri(feedbackMsURI))
+
 				.build();
 	}
 
