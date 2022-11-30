@@ -1,6 +1,6 @@
 package fr.polytech.ig5.mnm.feedbackms.models;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Data;
 
 import java.util.UUID;

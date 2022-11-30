@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.0.0'
-	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.springframework.boot' version '2.7.5'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 group = 'fr.polytech.ig5.mnm'
@@ -30,10 +30,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	implementation 'org.modelmapper:modelmapper:3.1.0'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
-	testRuntimeOnly('org.junit.platform:junit-platform-launcher:1.9.0')
-	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.0')
-	testRuntimeOnly('org.junit.vintage:junit-vintage-engine:5.9.0')
 }
 
 tasks.named('test') {

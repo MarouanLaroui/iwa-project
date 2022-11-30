@@ -1,11 +1,8 @@
 package fr.polytech.ig5.mnm.feedbackms.DTO;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import javax.validation.constraints.*;
 import java.util.UUID;
 
 @Data
