@@ -6,8 +6,4 @@ spring:
           '[/**]':
             allowedOrigins: ${FRONTEND_URI}
             allowedHeaders: "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
+            allowedMethods: "*"
