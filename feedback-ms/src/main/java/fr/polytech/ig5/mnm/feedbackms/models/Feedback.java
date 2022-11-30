@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name="applications")
+@Table(name="feedbacks")
 public class Feedback {
 
     @Id

@@ -16,4 +16,6 @@ public interface FeedbackRepository extends CrudRepository<Feedback, UUID> {
     List<Feedback> findFeedbacksByReceiverId(UUID senderId);
 
     Optional<Feedback> findFeedbackBySenderIdAndReceiverId(UUID senderId, UUID receiverId);
+
+    void deleteFeedbacksByReceiverId(UUID receiverId);
 }

@@ -4,6 +4,7 @@ import fr.polytech.ig5.mnm.feedbackms.models.Feedback;
 import fr.polytech.ig5.mnm.feedbackms.repositories.FeedbackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,17 @@ public class FeedbackService {
     public Boolean delete(final UUID id) {
         try {
             repository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @Transactional
+    public Boolean deleteByReceiverId(final UUID receiverId){
+        try {
+            repository.deleteFeedbacksByReceiverId(receiverId);
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -2,7 +2,6 @@ package fr.polytech.ig5.mnm.feedbackms.controllers;
 
 import fr.polytech.ig5.mnm.feedbackms.DTO.FeedbackCreateDTO;
 import fr.polytech.ig5.mnm.feedbackms.models.Feedback;
-import fr.polytech.ig5.mnm.feedbackms.models.Worker;
 import fr.polytech.ig5.mnm.feedbackms.services.FeedbackService;
 import fr.polytech.ig5.mnm.feedbackms.utils.JwtUtils;
 import org.modelmapper.ModelMapper;
