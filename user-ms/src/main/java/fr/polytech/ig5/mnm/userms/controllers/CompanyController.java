@@ -126,6 +126,7 @@ public class CompanyController {
         company.setEmail(companyDTO.getEmail() == null ? company.getEmail() : companyDTO.getEmail());
         company.setPassword(companyDTO.getPassword() == null ? company.getPassword() : passwordEncoder.encode(company.getPassword()));
         company.setDescription(companyDTO.getDescription() == null ? company.getDescription() : companyDTO.getDescription());
+        company.setSlogan(companyDTO.getSlogan() == null ? company.getSlogan() : companyDTO.getSlogan());
         company.setSector(companyDTO.getSector() == null ? company.getSector() : companyDTO.getSector());
         company.setEmployeesNumber(companyDTO.getEmployeesNumber() == null ? company.getEmployeesNumber() : companyDTO.getEmployeesNumber());
         company.setPictureUrl(companyDTO.getPictureUrl() == null ? company.getPictureUrl() : companyDTO.getPictureUrl());

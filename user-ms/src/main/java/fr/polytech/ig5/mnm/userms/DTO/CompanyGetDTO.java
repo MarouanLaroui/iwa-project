@@ -19,6 +19,8 @@ public class CompanyGetDTO {
 
     private String description;
 
+    private String slogan;
+
     private SectorType sector;
 
     private String pictureUrl;
