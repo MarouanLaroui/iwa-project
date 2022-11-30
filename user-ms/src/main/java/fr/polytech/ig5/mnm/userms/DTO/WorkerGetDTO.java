@@ -23,4 +23,7 @@ public class WorkerGetDTO {
     private String cvLink;
 
     private Boolean hasDrivingLicense;
+
+    private String pictureUrl;
+
 }

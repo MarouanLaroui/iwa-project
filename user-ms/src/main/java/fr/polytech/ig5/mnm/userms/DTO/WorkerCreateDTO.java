@@ -31,4 +31,6 @@ public class WorkerCreateDTO {
     @NotNull(message = "a worker must specify if he has his driving license")
     private Boolean hasDrivingLicense;
 
+    private String pictureUrl;
+
 }

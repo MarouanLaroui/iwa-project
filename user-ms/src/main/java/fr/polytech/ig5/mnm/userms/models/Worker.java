@@ -41,4 +41,7 @@ public class Worker {
     @Column(name="has_driving_license", nullable = false)
     private Boolean hasDrivingLicense;
 
+    @Column(name="picture_url")
+    private String pictureUrl;
+
 }
