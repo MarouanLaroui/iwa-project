@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -53,6 +54,30 @@ public class KafkaConsumer {
                 LocalDate.parse(map.get("endDate").toString()));
 
         this.workService.create(modelMapper.map(workDTO, Work.class));
+    }
+
+    @KafkaListener(topics="JOB_RATED_BY_WORKER", groupId = "2")
+    void jobRatedByWorkerListener(String workId){
+        Optional<Work> optionalWork = this.workService.find(UUID.fromString(workId));
+
+        if(!optionalWork.isEmpty()){
+            Work work = optionalWork.get();
+            work.setIsRatedByEmployee(true);
+            this.workService.update(work);
+        }
+
+    }
+
+    @KafkaListener(topics="JOB_RATED_BY_COMPANY", groupId = "2")
+    void jobRatedByCompanyListener(String workId){
+        Optional<Work> optionalWork = this.workService.find(UUID.fromString(workId));
+
+        if(!optionalWork.isEmpty()){
+            Work work = optionalWork.get();
+            work.setIsRatedByCompany(true);
+            this.workService.update(work);
+        }
+
     }
 
 }

@@ -1,6 +1,7 @@
 package fr.polytech.ig5.mnm.feedbackms.controllers;
 
 import fr.polytech.ig5.mnm.feedbackms.DTO.FeedbackCreateDTO;
+import fr.polytech.ig5.mnm.feedbackms.kafka.KafkaProducer;
 import fr.polytech.ig5.mnm.feedbackms.models.Feedback;
 import fr.polytech.ig5.mnm.feedbackms.models.Stats;
 import fr.polytech.ig5.mnm.feedbackms.services.FeedbackService;
@@ -9,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,6 +28,8 @@ public class FeedbackController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    private KafkaProducer producer;
 
     public FeedbackController(FeedbackService service) {
         this.service = service;
@@ -76,8 +78,9 @@ public class FeedbackController {
                 .body(feedbacks);
     }
 
-    @PostMapping("/")
+    @PostMapping("/{id}")
     public ResponseEntity<Object> create(
+            @PathVariable UUID jobId,
             @Valid @RequestBody FeedbackCreateDTO feedbackDTO,
             @RequestHeader (name="Authorization") String bearerToken) {
 
@@ -88,8 +91,10 @@ public class FeedbackController {
 
         if(workerId != null){
             newFeedback.setSenderId(workerId);
+            this.producer.sendMessage("JOB_RATED_BY_WORKER", String.valueOf(jobId));
         } else if(companyId != null){
             newFeedback.setSenderId(companyId);
+            this.producer.sendMessage("JOB_RATED_BY_COMPANY", String.valueOf(jobId));
         } else {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
