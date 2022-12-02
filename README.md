@@ -22,3 +22,4 @@ There must be 6 sub directories `gateway-ms`, `user-ms`, `offer-ms`, `recruiteme
 3. Go into the `kafka` sub directory and run the command `docker-compose up`. **Wait that the container is running before continuing to step 4.**
 4. Go into the 5 sub directories that ends with `-ms` and run the command `docker-compose --env-file .env.dev up --build`.
 This will build the micro services containers.
+You are now running the backend!
