@@ -1,4 +1,4 @@
-# iwa-project
+# Fast seasonal job
 
 This is the backend of a web application made for people searching for seasonal jobs. 
 This project was created during the 5th year of the Computer Science and management curriculum at Polytech Montpellier.
